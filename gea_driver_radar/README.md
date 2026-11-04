@@ -7,6 +7,12 @@ polygon per evidence layer.
 
 ![Paper panel C reproduction](radar_paper_fig3c.png)
 
+Same figure, side by side with the original at identical scale (both panels are
+drawn at 12.4 px mm⁻¹; the only intended difference is the SHRUBS / SRAD_11
+transposition documented further down):
+
+![Reference vs this script](radar_vs_reference.png)
+
 ## What the reference panel actually plots
 
 The caption reads "the number of environment-associated SNPs and the number of
