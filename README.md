@@ -8,6 +8,7 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 | Folder | Figure | Outputs |
 |---|---|---|
 | [`china_sampling_map/`](china_sampling_map/README.md) | Adopted WGS individuals of Chinese indigenous chicken breeds — province choropleth **and** county-level point map with zoom inset | `fig1_province_counts.png/.pdf`, `fig2_sampling_sites.png/.pdf`, plus `CAPTIONS.md` |
+| [`corr_ci_scatter/`](corr_ci_scatter/README.md) | Method agreement per environmental variable — points coloured by variable, one linear fit + 95 % confidence band each, `R` / `P` / `(n)` block on the right (Figure 4A layout) | `corr_ci_scatter.png/.pdf`, `corr_ci_scatter_stats.tsv` |
 | [`niche_overlap_null/`](niche_overlap_null/README.md) | Observed vs null niche-overlap index — one panel per environmental variable: two permutation histograms (Schoener's D / Hellinger's I) with the observed value pinned by a dashed rule and an axis triangle | `niche_overlap_null.png/.pdf`, plus `CAPTIONS.md` |
 | [`gea_marginal_scatter/`](gea_marginal_scatter/README.md) | Genotype–environment association screen — one panel per environmental variable: RDA correlation vs LFMM −log10(P), with marginal −log10(P) histogram and cumulative percentage | `gea_marginal_scatter.png/.pdf` |
 | [`pca_climate_zone/`](pca_climate_zone/README.md) | PCA of Chinese indigenous chickens coloured by agricultural climate zone (colour + shape double encoding, horizontal two-row legend above the panel) — TE-insertion version **and** SNP version, same layout | `fig_pca_te_climate.png/.pdf`, `fig_pca_snp_climate.png/.pdf`, `preview_6zone_synthetic.png/.pdf` (synthetic layout check), plus `CAPTIONS.md` |
@@ -27,7 +28,11 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 ## Re-running a figure
 
 ```bash
-cd china_sampling_map
+cd corr_ci_scatter
+Rscript plot_corr_ci_panel.R --input te_method_corr.tsv --out corr_ci_scatter \
+        --xlab '~bold("|"*italic(z)[RDA]*"|")' --ylab '~bold("|"*rho*"|")'
+
+cd ../china_sampling_map
 python3 plot_china_sampling_map.py --lang en   # province choropleth
 python3 plot_china_sampling_map.py --lang zh
 python3 plot_china_sampling_points.py          # county-level point map

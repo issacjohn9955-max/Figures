@@ -1,0 +1,7 @@
+group	n	R	P	x_label	y_label	method
+BIO_18	157	0.23	0.0031	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
+BIO_19	157	-0.16	0.042	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
+BIO_2	157	0.14	0.083	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
+BIO_3	157	-0.0013	0.99	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
+BIO_9	157	0.11	0.16	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
+SRAD	157	0.12	0.12	bold("|" * italic(z)[RDA] * "|")	bold("|" * rho * "|")	pearson
