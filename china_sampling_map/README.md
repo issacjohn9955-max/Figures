@@ -1,13 +1,17 @@
-# China sampling map — adopted WGS individuals per province
+# China sampling — adopted WGS individuals, province and point level
 
-A four-class choropleth of China showing where the adopted whole-genome-sequencing
-samples of Chinese indigenous chicken breeds come from. Same visual language as the
-MaxEnt suitability maps commonly used in Chinese ecology papers (blank → olive →
-orange → red, thin grey province borders, black national border, nine-dash line and
-South China Sea islands), repurposed for sampling effort instead of habitat
-suitability.
+Where the adopted whole-genome-sequencing samples of Chinese indigenous chicken
+breeds come from. Two views of the same table:
 
-![China sampling map](china_sampling_map.png)
+* **province choropleth** (`china_sampling_map.*`) — four-class fill, MaxEnt-map
+  visual language;
+* **point map** (`china_sampling_points.*`) — every collection site plotted at its
+  county/city coordinates, with a numbered breed list and a zoom inset for the
+  crowded southwest cluster.
+
+![Province map](china_sampling_map.png)
+
+![Point map](china_sampling_points.png)
 
 ## Data provenance
 
@@ -18,47 +22,70 @@ Selection rule, as specified by the project owner:
 1. rows whose summary-sheet marker is shaded blue (`FF0070C0`), **or**
 2. rows tagged as in-house / 本实验室数据.
 
-Result: **26 breed records · 22 breed entries · 367 individuals · 10 provinces**.
-Rows without an accession number (in-house data) are counted by their recorded
-individual count; otherwise the count is capped by the number of listed
-SRR/ERR/CRR accessions.
+That yields **26 blue rows**. Two of them are duplicate re-uploads of an earlier
+row (sheets note “与第57行重复，不重复采纳” / “与第63行重复”), so the point figure
+uses **24 records → 21 sites → 363 individuals**; the province figure still counts
+those two rows and shows **367**.
 
-| Province | Individuals | Records | Breeds |
-|---|---:|---:|---:|
-| Henan 河南 | 93 | 8 | 5 |
-| Guizhou 贵州 | 78 | 7 | 6 |
-| Gansu 甘肃 | 46 | 2 | 2 |
-| Heilongjiang 黑龙江 | 30 | 1 | 1 |
-| Anhui 安徽 | 29 | 2 | 2 |
-| Hainan 海南 | 29 | 1 | 1 |
-| Hunan 湖南 | 22 | 2 | 2 |
-| Beijing 北京 | 20 | 1 | 1 |
-| Fujian 福建 | 10 | 1 | 1 |
-| Hubei 湖北 | 10 | 1 | 1 |
+| Province | Individuals | Records |
+|---|---:|---:|
+| Henan 河南 | 93 | 8 |
+| Guizhou 贵州 | 78 | 7 |
+| Gansu 甘肃 | 46 | 2 |
+| Heilongjiang 黑龙江 | 30 | 1 |
+| Anhui 安徽 | 29 | 2 |
+| Hainan 海南 | 29 | 1 |
+| Hunan 湖南 | 22 | 2 |
+| Beijing 北京 | 20 | 1 |
+| Fujian 福建 | 10 | 1 |
+| Hubei 湖北 | 10 | 1 |
 
-Class breaks: `1–19` / `20–49` / `≥50` individuals; provinces outside the table are
-`None` and drawn in light grey.
+Class breaks: province map `1–19 / 20–49 / ≥50`; point map `1–9 / 10–19 / 20–29 / ≥30`.
+
+## Coordinates
+
+`china_sampling_sites.tsv` carries one row per collection site:
+
+| column | meaning |
+|---|---|
+| `lon`, `lat` | coordinate of the county / city government seat (DataV GeoAtlas `center`), or the representative point of a named production region |
+| `precision` | `county`, `city`, `prefecture`, `region` — `region` rows are drawn as **dashed rings** because the record is only “江汉平原” or “中原产区” level |
+| `dx`, `dy` | label offset in degrees, hand-tuned so the 21 numbers do not collide |
+| `individuals`, `records` | adopted individuals and how many blue rows were merged into this site |
+
+Merged duplicates: 淅川乌骨鸡 (2 rows), 正阳三黄鸡 (2), 固始鸡 (2). Duplicate
+re-uploads dropped: 贵州黔东南小香鸡 row 58, 威宁鸡 row 62.
+
+Sites whose record is only region-level:
+
+| id | breed | placed at | reason |
+|---|---|---|---|
+| 15 | 河南斗鸡 | Kaifeng 114.34 E, 34.80 N | record says only “河南省（中原斗鸡产区）” |
+| 19 | 江汉鸡 | Xiantao 113.45 E, 30.36 N | record says only “湖北省江汉平原” |
+| 7 | 黔东南小香鸡 | Kaili 107.98 E, 26.58 N | prefecture-level record |
 
 ## Files
 
 | Path | Role |
 |---|---|
-| `china_sampling_counts.tsv` | Aggregated counts only — the single input of the figure |
-| `plot_china_sampling_map.py` | Renderer (matplotlib + GeoJSON, no GDAL/geopandas) |
-| `data/*.geojson` | Boundary inputs (see *Boundary data* below) |
-| `china_sampling_map.png/.pdf` | English figure, 600 dpi / vector |
-| `china_sampling_map_zh.png/.pdf` | Chinese figure, same layout |
+| `china_sampling_counts.tsv` | Province aggregates — input of the choropleth |
+| `china_sampling_sites.tsv` | Site coordinates — input of the point map |
+| `plot_china_sampling_map.py` | Choropleth renderer (matplotlib + GeoJSON) |
+| `plot_china_sampling_points.py` | Point-map renderer (same stack, plus zoom inset) |
+| `data/*.geojson` | Boundary inputs (see *Boundary data*) |
+| `china_sampling_map.png/.pdf` | Province map, EN; `_zh` variant also present |
+| `china_sampling_points.png/.pdf` | Point map (Chinese labels, since breed names are Chinese) |
 
 ## Usage
 
 ```bash
-python3 plot_china_sampling_map.py --lang en      # -> china_sampling_map.png + .pdf
-python3 plot_china_sampling_map.py --lang zh      # -> china_sampling_map_zh.*
+python3 plot_china_sampling_map.py --lang en      # province map
+python3 plot_china_sampling_map.py --lang zh
+python3 plot_china_sampling_points.py             # point map + inset
 ```
 
-Options: `--counts`, `--geo`, `--maritime`, `--outdir`, `--stem`.
-Edit `china_sampling_counts.tsv` (add `dx`/`dy` label offsets per province) and
-re-run; nothing else needs touching.
+Options: `--counts` / `--sites`, `--geo`, `--maritime`, `--outdir`, `--stem`.
+Edit the TSV and re-run; label offsets live in the same file.
 
 ## Boundary data
 
@@ -68,7 +95,7 @@ re-run; nothing else needs touching.
 * `data/china_maritime.geojson` — maritime boundary as `MultiLineString`, from
   [cnmetlab/cnmaps-data](https://github.com/cnmetlab/cnmaps-data).
 
-`**/data/` is git-ignored by this repository, so fetch the two files after cloning:
+`data/` is git-ignored, so fetch both after cloning:
 
 ```bash
 mkdir -p data && cd data
@@ -83,18 +110,20 @@ boundary (`bzdt.ch.mnr.gov.cn`) and print its approval number (审图号).
 
 ## Style notes
 
-* Canvas 149 × 154 mm, white background, no grid, no gradients or shadows.
-* Text 5.5–7 pt, Arial/Helvetica with Liberation Sans/DejaVu Sans fallback;
-  Chinese variant uses PingFang SC / Heiti SC.
-* Four-class ramp `#EFEFEF / #B0A81E / #E8891B / #C8102E` — the MaxEnt convention,
+* Province map 149 × 154 mm, point map 189 × 156 mm; white background, no grid,
+  no gradients or shadows.
+* Text 5.5–7 pt, PingFang SC / Heiti SC for Chinese, Arial/DejaVu Sans fallback.
+* Four-class ramp `#B0A81E / #E8891B / #C8102E / #7A1020` — the MaxEnt convention,
   chosen because the target figure language is the suitability map.
+* Marker colour and area both encode the individual count (redundant encoding);
+  `region`-level records get a dashed ring.
 * National border is a thick stroke under the fills (the fill covers its inner
   half), so border and fill share one vector path and can never misregister.
-* Labels carry a thin halo; provinces smaller than the label get a leader line.
+* The southwest cluster gets a zoom inset (`103.4–111.0 E, 24.1–28.6 N`) with the
+  extent boxed on the main map; its numbers are moved into the inset only.
 * Export: PNG 600 dpi + vector PDF with editable text (`pdf.fonttype = 42`).
 
 ## Privacy
 
-Only per-province aggregates are committed. Individual accession lists, sample
-metadata and the source workbook stay in the research workspace; nothing
-individual-level is pushed to this style repository.
+Only aggregates and site coordinates are committed — no accession IDs, no sample
+metadata, no sequencing data. The source workbook stays in the research workspace.

@@ -7,7 +7,7 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 
 | Folder | Figure | Outputs |
 |---|---|---|
-| [`china_sampling_map/`](china_sampling_map/README.md) | Adopted WGS individuals per province, Chinese indigenous chicken breeds — four-class choropleth of China with nine-dash line | `china_sampling_map.png/.pdf` (EN), `china_sampling_map_zh.png/.pdf` (ZH) |
+| [`china_sampling_map/`](china_sampling_map/README.md) | Adopted WGS individuals of Chinese indigenous chicken breeds — province choropleth **and** county-level point map with zoom inset | `china_sampling_map*.png/.pdf`, `china_sampling_points.png/.pdf` |
 
 ## Conventions
 
@@ -25,8 +25,9 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 
 ```bash
 cd china_sampling_map
-python3 plot_china_sampling_map.py --lang en
+python3 plot_china_sampling_map.py --lang en   # province choropleth
 python3 plot_china_sampling_map.py --lang zh
+python3 plot_china_sampling_points.py          # county-level point map
 ```
 
 Requirements: Python 3.9+, `numpy`, `matplotlib`. No GDAL/geopandas needed — the
