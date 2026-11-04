@@ -37,7 +37,9 @@ PC1/PC2 散点、按 **Climate zone** 六区着色 + 不同符号，六区图例
 
 
 ```bash
-# 依赖：R ≥ 4.1 + ggplot2、jsonlite；与本仓库并排的 figure-style/ 仓库（提供 style/ 层）
+# 依赖：R ≥ 4.1 + ggplot2、jsonlite；figure-style 仓库的 style/ 层。两种找法：
+#   ① 把 figure-style/ 放在本仓库上一级（默认，脚本自动向上查找）
+#   ② 或设 FIGURE_STYLE_DIR=/path/to/figure-style
 cd pca_climate_zone
 
 Rscript plot_pca_climate_zone.R \

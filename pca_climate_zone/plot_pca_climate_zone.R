@@ -38,6 +38,12 @@ script_dir <- local({
 # 向上找 figure-style/style/ggplot2_theme.R：脚本无论在 pca_climate_zone/ 还是
 # figures_repo/pca_climate_zone/ 下都能定位到风格层
 find_style <- function(start) {
+  env <- Sys.getenv("FIGURE_STYLE_DIR")
+  if (nzchar(env)) {
+    f <- file.path(env, "style", "ggplot2_theme.R")
+    if (file.exists(f)) return(normalizePath(f))
+    stop("FIGURE_STYLE_DIR=", env, " 下没有 style/ggplot2_theme.R", call. = FALSE)
+  }
   d <- normalizePath(start, mustWork = FALSE)
   for (i in seq_len(8)) {
     f <- file.path(d, "figure-style", "style", "ggplot2_theme.R")
@@ -47,7 +53,8 @@ find_style <- function(start) {
     if (identical(dirname(d), d)) break
     d <- dirname(d)
   }
-  stop("找不到 figure-style/style/ggplot2_theme.R", call. = FALSE)
+  stop("找不到 figure-style/style/ggplot2_theme.R：把 figure-style/ 放在本仓库上一级，\n",
+       "或设 FIGURE_STYLE_DIR 指向它（含 style/ 子目录）", call. = FALSE)
 }
 source(find_style(script_dir))
 

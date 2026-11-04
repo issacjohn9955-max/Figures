@@ -53,4 +53,5 @@ needed — the China boundary is read straight from GeoJSON); R ≥ 4.1 with
 `ggplot2`, `patchwork` and `scales` for the GEA panels. The `pca_climate_zone`
 module additionally reads its palette, type sizes and page presets from a sibling
 `figure-style/` checkout (`style/theme.json`, `style/palettes.json`,
-`style/ggplot2_theme.R`) — put it next to this repository, and the scripts will find it.
+`style/ggplot2_theme.R`) — put it next to this repository, or point the
+`FIGURE_STYLE_DIR` environment variable at it.
