@@ -40,6 +40,9 @@
 #   --ann-step MM     vertical distance between rows               (default: 3.3)
 #   --ann-gap MM      horizontal gap between the R / P / n columns (default: 2.4)
 #   --ann-right MM    gap between the n column and the right edge  (default: 1.2)
+#   --ann-bg ALPHA    white backing rectangle behind the whole block; 0 keeps the
+#                     reference panel's look, 0.7-0.9 is the escape hatch when
+#                     the block lands on dense points and bands   (default: 0)
 #   --ann-char-mm MM  width of one character, used to place the columns
 #                     so they never overlap          (default: 0.60 * size * 0.3528)
 #   --xlim A,B        override x limits        (default: data range + 5% padding)
@@ -235,7 +238,8 @@ px_size   <- as_num(get_opt("point-size", NULL), 1.2)
 px_alpha  <- as_num(get_opt("point-alpha", NULL), 0.8)
 line_w    <- as_num(get_opt("line-width", NULL), 0.6)
 band_a    <- as_num(get_opt("band-alpha", NULL), 0.30)
-halo      <- as_num(get_opt("ann-halo", NULL), 0.20)   # 0 = no outline
+halo      <- as_num(get_opt("ann-halo", NULL), 0.18)   # 0 = no outline
+ann_bg    <- as_num(get_opt("ann-bg", NULL), 0)         # 0 = reference look
 legend_pos <- get_opt("legend-pos", "top")
 leg_guide  <- if (identical(legend_pos, "right")) {
   guide_legend(ncol = 1)
@@ -250,6 +254,14 @@ expr_or_text <- function(v, default) {
 xlab <- expr_or_text(get_opt("xlab", NULL), "x")
 ylab <- expr_or_text(get_opt("ylab", NULL), "y")
 
+# backing rectangle, sized to the block plus 1.4 mm of breathing room
+ann_bg_layer <- annotate(
+  "rect",
+  xmin = x_r - 1.4 / mm_per_x, xmax = x_right + 1.4 / mm_per_x,
+  ymin = min(ann$y) - 1.5 / mm_per_y, ymax = max(ann$y) + 1.5 / mm_per_y,
+  fill = "white", alpha = ann_bg, colour = NA
+)
+
 p <- ggplot(d, aes(x = x, y = y, colour = group, fill = group))
 if (all(table(d$group) >= 3)) {
   p <- p + geom_smooth(method = "lm", formula = y ~ x, se = TRUE, level = 0.95,
@@ -258,8 +270,13 @@ if (all(table(d$group) >= 3)) {
 p <- p +
   # points go in their own layer so that no confidence band covers them
   geom_point(size = px_size, alpha = px_alpha, stroke = 0, show.legend = TRUE) +
-  # optional white halo: the block sits over the confidence bands, and a thin
-  # outline keeps the labels readable without a filled box behind them.
+  # Optional white backing behind the block. On dense data the labels land on
+  # top of points and bands: a halo alone leaves crescents where a point is cut
+  # in half, and a salmon label on a salmon band is unreadable. A translucent
+  # rectangle (no border) fixes both and stays nearly invisible on white.
+  # Set --ann-bg 0 to get the reference panel's bare-on-white look.
+  {if (ann_bg > 0) ann_bg_layer else NULL} +
+  # optional white halo on top of that backing; harmless when the backing is on
   geom_text(data = ann, aes(x = x, y = y, label = lab),
             parse = TRUE, hjust = 0, vjust = 0.5, colour = "white",
             size = text_pt * mm_pt + halo, show.legend = FALSE,

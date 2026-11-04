@@ -8,6 +8,20 @@ colour.
 
 ![Method agreement scatter](corr_ci_scatter.png)
 
+## Quick start (two files, ~10 s)
+
+`plot_corr_ci_panel.R` needs nothing but R + ggplot2 + scales, and only three
+input columns. Copy the script and the synthetic example anywhere and run:
+
+```bash
+Rscript plot_corr_ci_panel.R --input example_group_xy.tsv --out demo
+# -> demo.png, demo.pdf, demo_stats.tsv
+```
+
+`example_group_xy.tsv` is 3 groups × 45 synthetic points (one moderate positive
+slope, one weak negative, one null) so the three possible outcomes are visible
+at a glance. Swap in your own table and nothing else changes.
+
 ## What the panel shows
 
 * **x** — evidence from screen 1 (in the paper: standardized F<sub>ST</sub> of a
@@ -61,13 +75,29 @@ are produced.
 | `--width` / `--height` | 112 / 56 mm | the reference panel is 106 × 43 mm of plotting area |
 | `--point-size` | 1.2 mm | 1.0–1.3 matches the reference |
 | `--ann-step` / `--ann-top` | 3.3 / 1.4 mm | row pitch and top gap of the `R / P / n` block |
-| `--ann-halo` | 0.20 mm | white outline behind the labels; set `0` for a flat look, it exists because the block sits over the bands |
+| `--ann-halo` | 0.18 mm | white outline behind the labels, so the block stays readable over bands and points |
+| `--ann-bg` | 0 | white backing rectangle behind the whole block. `0` keeps the reference panel's look; `0.7–0.9` is the escape hatch when the block lands on very dense ink |
 | `--legend-pos` | `top` | `right` rotates the block, `none` drops it |
 
 The horizontal anchors of the `R / P / n` columns are solved from the text width
 in mm, not taken as a fraction of the x range. A fraction-based anchor looks
 right on a wide axis (13 z-units in the paper) and collapses into overlapping
 text as soon as the x range is narrow (1.3 units in the example below).
+
+## What this folder contains, and what it does not
+
+| committed | not committed |
+|---|---|
+| the plotting script, the README, the rendered PNG (600 dpi) and vector PDF | raw genotypes, VCFs, per-sample or per-locus tables |
+| `te_method_corr.tsv`, 942 rows of `group / x / y` — group labels only | sample IDs, breed IDs, sequencing accessions, TE locus IDs |
+| `corr_ci_scatter_stats.tsv`, the R / P / n behind the printed labels | `anonymization_map.tsv` and the other project-internal tables |
+
+The repository is public, so the constraint is deliberate: an input table that
+reaches this folder carries aggregates and derived statistics only. The example
+table passes that test because it has no sample identifiers at all — the two
+numbers in each row cannot be traced back to an individual or a locus. The
+provenance script `build_te_method_corr.py` stays in the folder for
+reproducibility but reads from the project directory, not from the repository.
 
 ## The example table is a layout prototype, not a result
 
