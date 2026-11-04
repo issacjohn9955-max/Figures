@@ -15,6 +15,7 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 | [`pca_climate_zone/`](pca_climate_zone/README.md) | PCA of Chinese indigenous chickens coloured by agricultural climate zone (colour + shape double encoding, horizontal two-row legend above the panel) — TE-insertion version **and** SNP version, same layout | `fig_pca_te_climate.png/.pdf`, `fig_pca_snp_climate.png/.pdf`, `preview_6zone_synthetic.png/.pdf` (synthetic layout check), plus `CAPTIONS.md` |
 | [`te_ibe_adaptive_neutral/`](te_ibe_adaptive_neutral/README.md) | IBD vs IBE — FST/(1−FST) against geographic distance (E) and environmental distance (F), adaptive vs neutral TEs, each with a linear fit + 95% CI and a Mantel r/p legend | `te_ibe_adaptive_neutral.png/.pdf` |
 | [`te_factor_polar/`](te_factor_polar/README.md) | Climate-associated TE loci per driver — polar stacked bars, inner layer = unique to that driver, outer = also associated with another driver (Figure 3B layout); the paper-style reproduction **and** the ChickenTE version | `te_factor_polar.png/.pdf`, `te_factor_polar_all7.png/.pdf`, `demo_paper_style.png/.pdf` + `demo_compare.png`, plus `CAPTIONS.md` |
+| [`variable_contribution/`](variable_contribution/README.md) | Contribution of each climate variable to TE variation — ranked bars with a 1 % screening line, plus an inset combo panel (contribution bars + permutation-importance line) carrying the model settings (Figure 2A/2B layout) | `variable_contribution.png/.pdf`, plus `CAPTIONS.md` |
 
 ## Conventions
 
@@ -68,11 +69,17 @@ Rscript plot_pca_climate_zone.R --scores data/pca_te_scores.tsv \
         --variance data/pca_te_variance.tsv --out fig_pca_te_climate \
         --palette chromatic_nc --tag B --width-mm 160 --height-mm 111
 Rscript make_synthetic_preview.R               # 6-zone layout check (synthetic)
+
+cd te_ibe_adaptive_neutral
+Rscript te_ibe_mantel.R                        # 默认读 input/ 的 cn14 群体级聚合表
+Rscript te_ibe_mantel.R --from-pairs . --outdir repaint   # 只重画，不重算
 ```
 
 Requirements: Python 3.9+, `numpy`, `matplotlib` for the maps (no GDAL/geopandas
-needed — the China boundary is read straight from GeoJSON); R ≥ 4.1 with
-`ggplot2`, `patchwork` and `scales` for the GEA panels.
+needed — the China boundary is read straight from GeoJSON); R ≥ 4.2 with
+`ggplot2`, `patchwork` and `scales` for the GEA panels. `te_ibe_adaptive_neutral`
+needs only `ggplot2` — the Weir–Cockerham θ and the Mantel test are implemented
+inside its script, so no `vegan`/`hierfstat`.
 
 ## Style snapshot
 

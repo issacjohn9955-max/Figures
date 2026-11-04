@@ -24,6 +24,7 @@
 | `pca_climate_zone` | ggplot2, jsonlite | — | 无（`data/*.tsv` 已入库） |
 | `te_ibe_adaptive_neutral` | ggplot2 | — | 无（`input/` 下的群体级聚合表已入库） |
 | `te_factor_polar` | ggplot2, grid, scales | — | 无（输入表已入库；从原始结果重建才需 severdata） |
+| `variable_contribution` | — | numpy, pandas, matplotlib | 无（`variable_stats.tsv` 已入库；从原始结果重算才需 severdata 的三个上游表） |
 | `style/` | jsonlite（`ggplot2_theme.R`），ragg **可选** | matplotlib | — |
 
 `ragg` 只是让 PNG 用真 Arial 并写入 DPI 元数据；没有它自动退回系统 `png()` 设备，

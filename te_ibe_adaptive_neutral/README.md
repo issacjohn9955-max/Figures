@@ -85,7 +85,10 @@ W&C 公式里的 h 必须是观测杂合度。用 2p(1−p) 近似（只拿到�
 ## 4. 怎么改
 
 ```bash
-# 本目录重跑（读 input/ 的群体级聚合表，结果与服务器个体级流程一致）
+# 在本目录直接跑：不给参数时自动使用 input/ 里的 cn14 聚合表
+Rscript te_ibe_mantel.R
+
+# 等价的显式写法（读 input/ 的群体级聚合表，结果与服务器个体级流程一致）
 Rscript te_ibe_mantel.R \
   --freq input/cn14_group_freq.csv.gz --het input/cn14_group_het.csv.gz \
   --groups-file input/cn14_groups.tsv \
@@ -139,7 +142,26 @@ Rscript te_ibe_mantel.R --outdir out_all --cohort all        # 20 组，含原�
 - 环境距离用了模型里的 5 个变量（bio3/bio15/bio18/wind/srad），不是全部 87 个变量；
   换变量会改变 F 面板的绝对位置，但不影响 E 面板。
 
-## 6. 文件清单
+## 6. 环境与复现
+
+- **依赖**：R ≥ 4.2 + `ggplot2`（≥ 3.4，用到 `linewidth`）。Mantel 检验与 W&C θ 都是脚本里
+  自带实现，**不需要 vegan / hierfstat / jsonlite**。开发环境：R 4.5.2、ggplot2 4.0.1（macOS）。
+- **跨平台**：PNG 设备按平台自动选择（macOS `quartz` → 失败退 `cairo`；Linux `cairo`；
+  Windows `windows`），PDF 用 `pdf(family = "Helvetica")`，文本可编辑。
+- **编码**：`input/`、`*.tsv` 与输出均为 UTF-8；R ≥ 4.2 在各平台默认 UTF-8，中文品种名不会乱码。
+- **自检**：跑完对照 `te_ibe_mantel.tsv` 的 4 行 r/p 是否与上面结果表一致；
+  `input/` 与服务器个体级流程的结果差异只在小数第 8 位（聚合表存 6 位有效数字）。
+- **随机性**：Mantel 置换用默认 `--seed 1`，同一输入重复运行结果逐位一致。
+
+## 7. 与仓库 `style/` 的关系
+
+本模块**刻意复刻原图**的配色与字号（取自 sample.pdf 截图取色），没有套用
+`style/theme_fs()`：原图轴标题相对画布更大（14 pt / 11.1 in），直接套 7 pt 规范会失真。
+若要与本仓库其它图统一风格，把脚本开头的 `COL` 两行换成 `style/palettes.json` 里
+`categorical` 的前两色，并把 `theme_classic(base_size = 14)` 换成 `theme_fs()` 即可；
+统计与数据部分不用动。
+
+## 8. 文件清单
 
 | 文件 | 说明 |
 |---|---|
@@ -150,3 +172,4 @@ Rscript te_ibe_mantel.R --outdir out_all --cohort all        # 20 组，含原�
 | `te_ibe_groups.tsv` | 群体级汇总：样本量、经纬度、5 个环境变量 |
 | `te_ibe_adaptive_neutral.png` | 600 dpi 位图（11.1 × 5.06 in） |
 | `te_ibe_adaptive_neutral.pdf` | 矢量版（Helvetica） |
+| `CAPTIONS.md` | 中/英图注与口径提醒（发表时直接取用） |

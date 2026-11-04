@@ -151,6 +151,11 @@ run_module te_factor_polar_demo te_factor_polar demo_paper_style.png -- \
   Rscript plot_polar_shared.R --input example_paper_figB.tsv --out demo_paper_style \
     --ymax 340 --breaks 0,100,200,300 --tag B --width 84 --height 80
 
+# --- 9. variable_contribution ----------------------------------------------
+run_module variable_contribution variable_contribution variable_contribution.png -- \
+  python3 plot_variable_contribution.py --input variable_stats.tsv \
+    --out variable_contribution --line perm
+
 # --- summary ---------------------------------------------------------------
 say ""
 say "----------------------------------------------------------------"

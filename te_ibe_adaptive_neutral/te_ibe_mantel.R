@@ -38,17 +38,28 @@ parse_args <- function(a) {
             freq = NULL, het = NULL, groups_file = NULL,
             dpi = 600, lab_x_km = "Distance (km)",
             lab_x_env = "Environmental distance")
-  i <- 1
+  given <- character(); i <- 1
   while (i <= length(a)) {
     k <- gsub("-", "_", sub("^--", "", a[i])); v <- a[i + 1]
     if (!k %in% names(o)) stop("未知参数: ", a[i])
-    o[[k]] <- v; i <- i + 2
+    o[[k]] <- v; given <- c(given, k); i <- i + 2
   }
+  o$given <- given
   o$qcut <- as.numeric(o$qcut); o$perm <- as.integer(o$perm); o$dpi <- as.integer(o$dpi)
   o
 }
 opt <- parse_args(commandArgs(trailingOnly = TRUE))
 dir.create(opt$outdir, showWarnings = FALSE, recursive = TRUE)
+
+# 在本模块目录直接 `Rscript te_ibe_mantel.R` 时，自动使用随附的 cn14 群体级聚合表
+if (is.null(opt$from_pairs) && !any(c("freq", "dosage") %in% opt$given) &&
+    file.exists("input/cn14_group_freq.csv.gz")) {
+  opt$freq <- "input/cn14_group_freq.csv.gz"
+  opt$het <- "input/cn14_group_het.csv.gz"
+  opt$groups_file <- "input/cn14_groups.tsv"
+  if (is.null(opt$adaptive_file)) opt$adaptive_file <- "input/adaptive_loci_lfmm_q05.txt"
+  message("[i] 未显式指定输入，使用本目录 input/ 下的 cn14 群体级聚合表")
+}
 
 # ------------------------------- 绘图函数 -----------------------------------
 COL  <- c("Adaptive TE" = "#F8696B", "Neutral TE" = "#00BFBF")   # 主色（取自原文）
@@ -111,9 +122,26 @@ render_panels <- function(pairs_tab, mantel_tab, opt) {
   pE <- make_panel(pairs_tab, "geo_km", opt$lab_x_km, mantel_tab[mantel_tab$dist == "geo", ])
   pF <- make_panel(pairs_tab, "env_dist", opt$lab_x_env, mantel_tab[mantel_tab$dist == "env", ])
   W <- 11.1; H <- 5.06
+  open_png <- function(file) {
+    # 跨平台：macOS 用 quartz，Linux 用 cairo，Windows 用 windows；失败再退回默认设备
+    types <- if (.Platform$OS.type == "windows") "windows" else
+             if (identical(Sys.info()[["sysname"]], "Darwin")) c("quartz", "cairo") else "cairo"
+    for (tp in types) {
+      ok <- tryCatch({
+        suppressWarnings(png(file, width = W, height = H, units = "in",
+                             res = opt$dpi, type = tp))
+        grDevices::dev.cur() > 1
+      }, error = function(e) FALSE)
+      if (isTRUE(ok)) return(invisible(TRUE))
+    }
+    png(file, width = W, height = H, units = "in", res = opt$dpi)
+    invisible(TRUE)
+  }
+  open_device <- function(file, dev) {
+    if (dev == "pdf") pdf(file, width = W, height = H, family = "Helvetica") else open_png(file)
+  }
   draw <- function(file, dev) {
-    if (dev == "png") png(file, width = W, height = H, units = "in", res = opt$dpi, type = "quartz")
-    else pdf(file, width = W, height = H, family = "Helvetica")
+    open_device(file, dev)
     grid.newpage()
     pushViewport(viewport(layout = grid.layout(1, 2)))
     for (k in 1:2) {
