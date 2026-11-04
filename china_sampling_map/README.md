@@ -21,25 +21,25 @@ Source workbook: `label1029.xlsx` (research workspace, **not** committed here).
 Selection rule, as specified by the project owner:
 
 1. rows whose summary-sheet marker is shaded blue (`FF0070C0`), **or**
-2. rows tagged as in-house / 本实验室数据.
+2. rows tagged as in-house data.
 
 That yields **26 blue rows**. Two of them are duplicate re-uploads of an earlier
-row (sheets note “与第57行重复，不重复采纳” / “与第63行重复”), so the point figure
+row (the sheets note it as a duplicate re-upload of row 57 / row 63), so the point figure
 uses **24 records → 21 sites → 363 individuals**; the province figure still counts
 those two rows and shows **367**.
 
 | Province | Individuals | Records |
 |---|---:|---:|
-| Henan 河南 | 93 | 8 |
-| Guizhou 贵州 | 78 | 7 |
-| Gansu 甘肃 | 46 | 2 |
-| Heilongjiang 黑龙江 | 30 | 1 |
-| Anhui 安徽 | 29 | 2 |
-| Hainan 海南 | 29 | 1 |
-| Hunan 湖南 | 22 | 2 |
-| Beijing 北京 | 20 | 1 |
-| Fujian 福建 | 10 | 1 |
-| Hubei 湖北 | 10 | 1 |
+| Henan | 93 | 8 |
+| Guizhou | 78 | 7 |
+| Gansu | 46 | 2 |
+| Heilongjiang | 30 | 1 |
+| Anhui | 29 | 2 |
+| Hainan | 29 | 1 |
+| Hunan | 22 | 2 |
+| Beijing | 20 | 1 |
+| Fujian | 10 | 1 |
+| Hubei | 10 | 1 |
 
 Class breaks: province map `1–19 / 20–49 / ≥50`; point map `1–9 / 10–19 / 20–29 / ≥30`.
 
@@ -50,20 +50,21 @@ Class breaks: province map `1–19 / 20–49 / ≥50`; point map `1–9 / 10–1
 | column | meaning |
 |---|---|
 | `lon`, `lat` | coordinate of the county / city government seat (DataV GeoAtlas `center`), or the representative point of a named production region |
-| `precision` | `county`, `city`, `prefecture`, `region` — `region` rows are drawn as **dashed rings** because the record is only “江汉平原” or “中原产区” level |
+| `precision` | `county`, `city`, `prefecture`, `region` — `region` rows are drawn as **dashed rings** because the record is only at “Jianghan Plain” / “Central Plains” level |
 | `dx`, `dy` | label offset in degrees, hand-tuned so the 21 numbers do not collide |
 | `individuals`, `records` | adopted individuals and how many blue rows were merged into this site |
 
-Merged duplicates: 淅川乌骨鸡 (2 rows), 正阳三黄鸡 (2), 固始鸡 (2). Duplicate
-re-uploads dropped: 贵州黔东南小香鸡 row 58, 威宁鸡 row 62.
+Merged duplicates: Xichuan black-bone (2 rows), Zhengyang three-yellow (2),
+Gushi (2). Duplicate re-uploads dropped: Qiandongnan small-fragrant row 58,
+Weining row 62.
 
 Sites whose record is only region-level:
 
 | id | breed | placed at | reason |
 |---|---|---|---|
-| 15 | 河南斗鸡 | Kaifeng 114.34 E, 34.80 N | record says only “河南省（中原斗鸡产区）” |
-| 19 | 江汉鸡 | Xiantao 113.45 E, 30.36 N | record says only “湖北省江汉平原” |
-| 7 | 黔东南小香鸡 | Kaili 107.98 E, 26.58 N | prefecture-level record |
+| 15 | Henan game | Kaifeng 114.34 E, 34.80 N | record says only “Henan, Central Plains game-fowl area” |
+| 19 | Jianghan | Xiantao 113.45 E, 30.36 N | record says only “Hubei, Jianghan Plain” |
+| 7 | Qiandongnan small-fragrant | Kaili 107.98 E, 26.58 N | prefecture-level record |
 
 ## Files
 
@@ -74,8 +75,8 @@ Sites whose record is only region-level:
 | `plot_china_sampling_map.py` | Choropleth renderer (matplotlib + GeoJSON) |
 | `plot_china_sampling_points.py` | Point-map renderer (same stack, plus zoom inset) |
 | `data/*.geojson` | Boundary inputs (see *Boundary data*) |
-| `china_sampling_map.png/.pdf` | Province map, EN; `_zh` variant also present |
-| `china_sampling_points.png/.pdf` | Point map (Chinese labels, since breed names are Chinese) |
+| `china_sampling_map.png/.pdf` | Province map (English) |
+| `china_sampling_points.png/.pdf` | Point map (English, no on-map text) |
 
 ## Usage
 
@@ -108,13 +109,14 @@ curl -Lo china_maritime.geojson \
 ```
 
 For journal submission inside China, replace them with the standard map service
-boundary (`bzdt.ch.mnr.gov.cn`) and print its approval number (审图号).
+boundary (`bzdt.ch.mnr.gov.cn`) and print its map approval number.
 
 ## Style notes
 
 * Province map 149 × 154 mm, point map 189 × 156 mm; white background, no grid,
   no gradients or shadows.
-* Text 5.5–7 pt, PingFang SC / Heiti SC for Chinese, Arial/DejaVu Sans fallback.
+* Text 5.5–7 pt, Arial/Helvetica with Liberation Sans and DejaVu Sans fallback;
+  no CJK fonts, so the PDFs embed cleanly on any machine.
 * Point map uses the house palette from
   [1577377232/Genomics-Figure-Styles](https://github.com/1577377232/Genomics-Figure-Styles)
   (`palettes.json` → `pangenome_spectrum`, the theme's default):

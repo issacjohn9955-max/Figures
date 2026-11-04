@@ -40,13 +40,14 @@ LAT = (3.0, 55.0)
 FIG_W, FIG_H = 5.85, 6.05          # inches ≈ 149 × 154 mm
 DPI_PNG = 600
 
-# --- four-class ramp (MaxEnt convention: blank → olive → orange → red) -------
-CLASS_COLORS = ["#EFEFEF", "#B0A81E", "#E8891B", "#C8102E"]
+# --- four-class ramp (pangenome_spectrum: light → deep blue) -----------------
+CLASS_COLORS = ["#E9EEF1", "#B4AD74", "#5899B2", "#386C8C"]
 BREAKS = [20, 50]                  # 1–19 / 20–49 / ≥50 individuals
 LABELS_EN = ["None", "1–19", "20–49", "≥50"]
 LABELS_ZH = ["无", "1–19", "20–49", "≥50"]
 
 TEXT = "#273746"
+GRID = "#A9B2BB"
 FONT_EN = ["Arial", "Helvetica", "Liberation Sans", "DejaVu Sans"]
 FONT_ZH = ["PingFang SC", "Heiti SC", "Songti SC", "Arial Unicode MS",
            "Noto Sans CJK SC", "DejaVu Sans"]
@@ -217,7 +218,7 @@ def main(argv=None) -> int:
     all_rings = [r for rings in prov.values() for r in rings]
 
     # national border: thick stroke under the fills, inner half gets covered
-    ax.add_collection(LineCollection(all_rings, colors="black", linewidths=2.1,
+    ax.add_collection(LineCollection(all_rings, colors=TEXT, linewidths=1.5,
                                      zorder=1))
     # province fills
     for name, rings in prov.items():
@@ -226,35 +227,10 @@ def main(argv=None) -> int:
         ax.add_patch(PathPatch(rings_to_path(rings), facecolor=color,
                                edgecolor="none", zorder=2))
     # province borders / nine-dash line
-    ax.add_collection(LineCollection(all_rings, colors="#8C8C8C",
-                                     linewidths=0.25, zorder=3))
-    ax.add_collection(LineCollection(maritime, colors="black", linewidths=0.9,
+    ax.add_collection(LineCollection(all_rings, colors=GRID,
+                                     linewidths=0.22, zorder=3))
+    ax.add_collection(LineCollection(maritime, colors=TEXT, linewidths=0.8,
                                      zorder=4))
-
-    # labels ------------------------------------------------------------
-    for name, rings in prov.items():
-        rec = data.get(name)
-        if not rec:
-            continue
-        big = max(rings, key=_area)
-        cx, cy = centroid(big)
-        tx, ty = cx + rec["dx"], cy + rec["dy"]
-        shown = rec[name_key]
-        if lang == "zh":
-            shown = shown.rstrip("省市")          # 河南省 -> 河南
-        txt = f"{shown} {rec['individuals']}"
-        dark = klass(rec["individuals"]) >= 2
-        far = abs(rec["dx"]) + abs(rec["dy"]) > 1.0
-        ax.annotate(
-            txt, xy=(cx, cy), xytext=(tx, ty), fontsize=5.8, ha="center",
-            va="center", zorder=10,
-            color="white" if dark else TEXT,
-            path_effects=[pe.withStroke(linewidth=1.0,
-                                        foreground="#1A1A1A" if dark else "white")],
-            arrowprops=dict(arrowstyle="-", lw=0.35,
-                            color="#4A4A4A" if dark else "#8C8C8C",
-                            shrinkA=0, shrinkB=2) if far else None,
-        )
 
     # frame -------------------------------------------------------------
     ax.set_xlim(LON)
