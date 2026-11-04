@@ -8,3 +8,4 @@ __pycache__/
 # 例外：pca_climate_zone 的派生小表是复现成品图的唯一输入，必须提交。
 !pca_climate_zone/data/
 !pca_climate_zone/data/*.tsv
+Rplots.pdf

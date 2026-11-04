@@ -14,9 +14,10 @@
 #     环境距离  : 标准化环境变量的欧氏距离（与原文一致）
 #     显著性    : Mantel test，9999 次群体标签置换（单侧 greater），同 vegan::mantel
 #
-#   用法（两种）:
-#     Rscript te_ibe_mantel.R --cohort cn14 --outdir out_cn14      # 从头算
-#     Rscript te_ibe_mantel.R --from-pairs out_cn14                # 只重画图（读已有表）
+#   用法（三种）:
+#     Rscript te_ibe_mantel.R                     # 在本目录：自动用 input/ 的 cn14 聚合表
+#     Rscript te_ibe_mantel.R --outdir out_cn14 --cohort cn14     # 个体级入口（服务器原始数据）
+#     Rscript te_ibe_mantel.R --from-pairs out_cn14 --outdir repaint   # 只重画图
 #
 #   输入（默认从服务器 14_TE_403_downstream_20261030 下载，见 README）:
 #     te_dosage.csv     个体 × TE 位点的存在剂量（0/1/2，已用 SNP 单倍型插补）
@@ -135,6 +136,8 @@ render_panels <- function(pairs_tab, mantel_tab, opt) {
       if (isTRUE(ok)) return(invisible(TRUE))
     }
     png(file, width = W, height = H, units = "in", res = opt$dpi)
+    if (grDevices::dev.cur() == 1L)
+      stop("无法打开 PNG 图形设备；请检查 R 的图形设备配置（cairo/quartz）")
     invisible(TRUE)
   }
   open_device <- function(file, dev) {
