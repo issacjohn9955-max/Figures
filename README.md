@@ -7,11 +7,11 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 
 | Folder | Figure | Outputs |
 |---|---|---|
-| [`china_sampling_map/`](china_sampling_map/README.md) | Adopted WGS individuals of Chinese indigenous chicken breeds — province choropleth **and** county-level point map with zoom inset | `fig1_province_counts.png/.pdf`, `fig2_sampling_sites.png/.pdf`, plus `CAPTIONS.md` |
+| [`china_sampling_map/`](china_sampling_map/README.md) | Adopted WGS individuals of Chinese indigenous chicken breeds (363 individuals / 24 records / 21 sites / 10 provinces) — province choropleth **and** county-level point map with zoom inset | `fig1_province_counts.png/.pdf`, `fig2_sampling_sites.png/.pdf`, plus `CAPTIONS.md` |
 | [`corr_ci_scatter/`](corr_ci_scatter/README.md) | Method agreement per environmental variable — points coloured by variable, one linear fit + 95 % confidence band each, `R` / `P` / `(n)` block on the right (Figure 4A layout) | `corr_ci_scatter.png/.pdf`, `corr_ci_scatter_stats.tsv` |
 | [`niche_overlap_null/`](niche_overlap_null/README.md) | Observed vs null niche-overlap index — one panel per environmental variable: two permutation histograms (Schoener's D / Hellinger's I) with the observed value pinned by a dashed rule and an axis triangle | `niche_overlap_null.png/.pdf`, plus `CAPTIONS.md` |
 | [`gea_driver_radar/`](gea_driver_radar/README.md) | Driver radar — one spoke per environmental variable, one polygon per evidence layer, on a shared count axis (Figure 3C layout); the paper reproduction **and** the ChickenTE TE version | `radar_paper_fig3c.png/.pdf`, `radar_chickente_te.png/.pdf` |
-| [`gea_marginal_scatter/`](gea_marginal_scatter/README.md) | Genotype–environment association screen — one panel per environmental variable: RDA correlation vs LFMM −log10(P), with marginal −log10(P) histogram and cumulative percentage | `gea_marginal_scatter.png/.pdf` |
+| [`gea_marginal_scatter/`](gea_marginal_scatter/README.md) | Genotype–environment association screen — one panel per environmental variable: RDA correlation vs LFMM −log10(P), with marginal −log10(P) histogram and cumulative percentage (**layout prototype on synthetic data**, see its README) | `gea_marginal_scatter.png/.pdf` |
 | [`pca_climate_zone/`](pca_climate_zone/README.md) | PCA of Chinese indigenous chickens coloured by agricultural climate zone (colour + shape double encoding, horizontal two-row legend above the panel) — TE-insertion version **and** SNP version, same layout | `fig_pca_te_climate.png/.pdf`, `fig_pca_snp_climate.png/.pdf`, `preview_6zone_synthetic.png/.pdf` (synthetic layout check), plus `CAPTIONS.md` |
 | [`te_ibe_adaptive_neutral/`](te_ibe_adaptive_neutral/README.md) | IBD vs IBE — FST/(1−FST) against geographic distance (E) and environmental distance (F), adaptive vs neutral TEs, each with a linear fit + 95% CI and a Mantel r/p legend | `te_ibe_adaptive_neutral.png/.pdf` |
 | [`te_factor_polar/`](te_factor_polar/README.md) | Climate-associated TE loci per driver — polar stacked bars, inner layer = unique to that driver, outer = also associated with another driver (Figure 3B layout); the paper-style reproduction **and** the ChickenTE version | `te_factor_polar.png/.pdf`, `te_factor_polar_all7.png/.pdf`, `demo_paper_style.png/.pdf` + `demo_compare.png`, plus `CAPTIONS.md` |
@@ -19,6 +19,10 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 
 ## Conventions
 
+* [`FIGURE_GUIDE.md`](FIGURE_GUIDE.md) (Chinese) explains, per figure, the principle
+  behind the statistic, what the rendered panel contains, and which numbers must
+  not be cited (synthetic prototypes vs real results). Read it before reusing a
+  panel in a manuscript.
 * Every figure folder has its own `README.md` stating **data provenance** and the
   exact selection rule used, so a figure can never be mistaken for a different
   dataset.

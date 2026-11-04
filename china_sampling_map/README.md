@@ -23,15 +23,15 @@ Selection rule, as specified by the project owner:
 1. rows whose summary-sheet marker is shaded blue (`FF0070C0`), **or**
 2. rows tagged as in-house data.
 
-That yields **26 blue rows**. Two of them are duplicate re-uploads of an earlier
-row (the sheets note it as a duplicate re-upload of row 57 / row 63), so the point figure
-uses **24 records → 21 sites → 363 individuals**; the province figure still counts
-those two rows and shows **367**.
+That yields **26 blue rows**. Two of them are duplicate re-uploads of earlier rows
+(rows 58 and 62), so **both** figures use **24 records → 21 sites → 363 individuals**.
+The earlier 367-individual version of the province map counted those duplicates and
+must not be cited.
 
 | Province | Individuals | Records |
 |---|---:|---:|
 | Henan | 93 | 8 |
-| Guizhou | 78 | 7 |
+| Guizhou | 74 | 5 |
 | Gansu | 46 | 2 |
 | Heilongjiang | 30 | 1 |
 | Anhui | 29 | 2 |
