@@ -14,6 +14,7 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 | [`gea_marginal_scatter/`](gea_marginal_scatter/README.md) | Genotype–environment association screen — one panel per environmental variable: RDA correlation vs LFMM −log10(P), with marginal −log10(P) histogram and cumulative percentage | `gea_marginal_scatter.png/.pdf` |
 | [`pca_climate_zone/`](pca_climate_zone/README.md) | PCA of Chinese indigenous chickens coloured by agricultural climate zone (colour + shape double encoding, horizontal two-row legend above the panel) — TE-insertion version **and** SNP version, same layout | `fig_pca_te_climate.png/.pdf`, `fig_pca_snp_climate.png/.pdf`, `preview_6zone_synthetic.png/.pdf` (synthetic layout check), plus `CAPTIONS.md` |
 | [`te_ibe_adaptive_neutral/`](te_ibe_adaptive_neutral/README.md) | IBD vs IBE — FST/(1−FST) against geographic distance (E) and environmental distance (F), adaptive vs neutral TEs, each with a linear fit + 95% CI and a Mantel r/p legend | `te_ibe_adaptive_neutral.png/.pdf` |
+| [`te_factor_polar/`](te_factor_polar/README.md) | Climate-associated TE loci per driver — polar stacked bars, inner layer = unique to that driver, outer = also associated with another driver (Figure 3B layout); the paper-style reproduction **and** the ChickenTE version | `te_factor_polar.png/.pdf`, `te_factor_polar_all7.png/.pdf`, `demo_paper_style.png/.pdf` + `demo_compare.png`, plus `CAPTIONS.md` |
 
 ## Conventions
 
@@ -26,6 +27,25 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
   than committed (see each module's *Boundary data* section).
 * Exports: PNG at 600 dpi for preview and vector PDF with editable text for
   layout work; 5.5–7 pt type, white background, no gradients or shadows.
+
+## Environment & self-check
+
+Python 3.9+/`numpy`/`matplotlib` and R ≥ 4.1/`ggplot2` cover 7 of the 8 modules;
+`gea_marginal_scatter` additionally needs `patchwork`, and `china_sampling_map`
+needs the two boundary GeoJSON files fetched by its documented `curl` calls.
+The per-module matrix, the exact versions this repository was rendered with and
+the known gaps are in [`REQUIREMENTS.md`](REQUIREMENTS.md).
+
+```bash
+bash run_all.sh           # rebuild every figure into outputs/ and diff it against the committed PNG
+bash run_all.sh polar     # only modules whose name matches
+```
+
+Each module runs inside a throw-away copy under `outputs/`, so the repository is
+never modified. Missing dependencies or missing boundary data are reported as
+`skip`, a render error or a PNG that no longer matches the committed one is
+reported as `fail` (exit code 1) — this is the quickest way to tell whether a
+clone can still reproduce the paper figures.
 
 ## Re-running a figure
 
