@@ -3,16 +3,16 @@
 Where the adopted whole-genome-sequencing samples of Chinese indigenous chicken
 breeds come from. Two views of the same table:
 
-* **province choropleth** (`china_sampling_map.*`) — four-class fill, MaxEnt-map
+* **province choropleth** (`fig1_province_counts.*`) — four-class fill, MaxEnt-map
   visual language;
-* **point map** (`china_sampling_points.*`) — every collection site plotted at its
+* **point map** (`fig2_sampling_sites.*`) — every collection site plotted at its
   county/city coordinates, English-only, **no text on the map** (journal style: the
   site list belongs in the caption or a table), plus a small zoom inset for the
   crowded southwest cluster.
 
-![Province map](china_sampling_map.png)
+![Province map](fig1_province_counts.png)
 
-![Point map](china_sampling_points.png)
+![Point map](fig2_sampling_sites.png)
 
 ## Data provenance
 
@@ -75,15 +75,15 @@ Sites whose record is only region-level:
 | `plot_china_sampling_map.py` | Choropleth renderer (matplotlib + GeoJSON) |
 | `plot_china_sampling_points.py` | Point-map renderer (same stack, plus zoom inset) |
 | `data/*.geojson` | Boundary inputs (see *Boundary data*) |
-| `china_sampling_map.png/.pdf` | Province map (English) |
-| `china_sampling_points.png/.pdf` | Point map (English, no on-map text) |
+| `fig1_province_counts.png/.pdf` | Province map (English) |
+| `fig2_sampling_sites.png/.pdf` | Point map (English, no on-map text) |
 
 ## Usage
 
 ```bash
-python3 plot_china_sampling_map.py --lang en      # province map
-python3 plot_china_sampling_map.py --lang zh
-python3 plot_china_sampling_points.py             # point map + inset (no labels)
+python3 plot_china_sampling_map.py --lang en      # -> fig1_province_counts.*
+
+python3 plot_china_sampling_points.py             # -> fig2_sampling_sites.*
 python3 plot_china_sampling_points.py --labels    # draft with place names
 ```
 

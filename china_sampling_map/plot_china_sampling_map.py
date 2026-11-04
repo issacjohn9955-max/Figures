@@ -158,7 +158,7 @@ def main(argv=None) -> int:
     ap.add_argument("--maritime", default=str(HERE / "data" / "china_maritime.geojson"))
     ap.add_argument("--lang", choices=["en", "zh"], default="en")
     ap.add_argument("--outdir", default=str(HERE))
-    ap.add_argument("--stem", default="china_sampling_map")
+    ap.add_argument("--stem", default="fig1_province_counts")
     args = ap.parse_args(argv)
 
     lang = args.lang
