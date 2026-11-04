@@ -98,7 +98,12 @@ def fmt_ticks(ax) -> None:
 
 def draw_panel(ax, var: str, d_null: np.ndarray, i_null: np.ndarray,
                d_obs: float, i_obs: float, bins: int, tag_title: bool,
-               edges: np.ndarray | None = None) -> None:
+               edges: np.ndarray | None = None, labels: dict | None = None) -> None:
+    labels = labels or {}
+    xlabel = labels.get("xlabel", "Identity index")
+    ylabel = labels.get("ylabel", "Count")
+    legend_d = labels.get("legend_d", r"Schoener's $\mathit{D}$")
+    legend_i = labels.get("legend_i", r"Hellinger's $\mathit{I}$")
     lo = min(d_null.min(), i_null.min(), d_obs, i_obs)
     hi = max(d_null.max(), i_null.max(), d_obs, i_obs)
     span = hi - lo if hi > lo else 0.02
@@ -132,8 +137,8 @@ def draw_panel(ax, var: str, d_null: np.ndarray, i_null: np.ndarray,
 
     # 图例
     handles = [
-        Patch(facecolor=C_D, edgecolor="none", label=r"Schoener's $\mathit{D}$"),
-        Patch(facecolor=C_I, edgecolor="none", label=r"Hellinger's $\mathit{I}$"),
+        Patch(facecolor=C_D, edgecolor="none", label=legend_d),
+        Patch(facecolor=C_I, edgecolor="none", label=legend_i),
     ]
     leg = ax.legend(handles=handles, loc="upper right", bbox_to_anchor=(1.0, 1.03),
                     ncol=2, frameon=True, facecolor="white", edgecolor="none",
@@ -149,8 +154,8 @@ def draw_panel(ax, var: str, d_null: np.ndarray, i_null: np.ndarray,
         lbl.set_fontweight("bold")
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.set_ylabel("Count", fontsize=7, fontweight="bold", labelpad=3)
-    ax.set_xlabel("Identity index", fontsize=7, fontweight="bold", labelpad=2)
+    ax.set_ylabel(ylabel, fontsize=7, fontweight="bold", labelpad=3)
+    ax.set_xlabel(xlabel, fontsize=7, fontweight="bold", labelpad=2)
     if tag_title:
         ax.set_title(var.upper(), loc="left", fontsize=8, fontweight="bold", pad=5)
 
@@ -171,6 +176,12 @@ def main() -> None:
     ap.add_argument("--width", type=float, default=6.4)
     ap.add_argument("--row-height", type=float, default=1.90)
     ap.add_argument("--dpi", type=int, default=600)
+    ap.add_argument("--xlabel", default="Identity index", help="x 轴标题")
+    ap.add_argument("--ylabel", default="Count", help="y 轴标题")
+    ap.add_argument("--legend-d", default=r"Schoener's $\mathit{D}$",
+                    help="青色指标在图例里的名字（可写 mathtext）")
+    ap.add_argument("--legend-i", default=r"Hellinger's $\mathit{I}$",
+                    help="黄色指标在图例里的名字（可写 mathtext）")
     args = ap.parse_args()
 
     setup_style()
@@ -195,7 +206,9 @@ def main() -> None:
             hi = max(d_null.max(), i_null.max(), row["D_obs"], row["I_obs"])
             edges = np.arange(lo, hi + args.binsize, args.binsize)
         draw_panel(ax, var, d_null, i_null, float(row["D_obs"]), float(row["I_obs"]),
-                   args.bins, tag_title=True, edges=edges)
+                   args.bins, tag_title=True, edges=edges,
+                   labels=dict(xlabel=args.xlabel, ylabel=args.ylabel,
+                               legend_d=args.legend_d, legend_i=args.legend_i))
 
     if args.tag:
         fig.text(0.012, 1 - 0.06 / fig.get_figheight(), args.tag,

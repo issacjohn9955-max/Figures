@@ -47,6 +47,7 @@ Yuan et al. (2026, *Zoological Research*) Figure 2J 的做法：
 2. `compute_te_overlap.py` —— **本次 demo 的数据源**：用 TE 插入频谱算 D/I
    （我们手上没有 MaxEnt 栅格，但 D/I 的公式是同一套）。
 3. `data/` 里是算好的小表（只有汇总，没有个体记录），可以直接拿去画。
+4. `example/` 是**合成数值**的示例，不依赖本项目任何文件，克隆下来就能验证版式（§4.1）。
 
 > 为什么 demo 不用 ENM：ENM 需要 MaxEnt 输出 0–1 适生概率栅格，本机/服务器
 > 目前没有这一步。TE 版把"适生概率分布"换成"TE 插入频率谱"，其余（分组规则、
@@ -99,9 +100,36 @@ python3 plot_niche_overlap_null.py \
 | `--bins 22` | 每个面板的柱数（也可用 `--binsize 0.01` 固定柱宽） |
 | `--order obs` | 面板顺序：`obs` = 按观测 D 从低到高，`file` = 输入顺序，或 `bio2,bio3,…` |
 | `--tag J` | 整图左上角的面板字母，`--tag ""` 去掉 |
+| `--xlabel` / `--ylabel` | 轴标题 |
+| `--legend-d` / `--legend-i` | 两个指标在图例里的名字（可写 mathtext） |
 | `--width` / `--row-height` | 画幅（英寸） |
 
 依赖：Python 3.9+、`numpy`、`matplotlib`、`pandas`。
+
+### 4.1 不想碰本项目数据，先跑示例
+
+`example/` 里有一份**合成数值**，不依赖 ChickenTE 的任何文件，克隆下来就能验证版式：
+
+```bash
+python3 example/make_example.py           # -> example/example_null.tsv / example_observed.tsv
+python3 plot_niche_overlap_null.py \
+    --null example/example_null.tsv \
+    --observed example/example_observed.tsv \
+    --out example/example_figure --tag ""
+```
+
+### 4.2 复用到别的指标
+
+这张图只认"两个分布 + 两个观测值"，指标叫什么、怎么算都不影响画图。复用清单：
+
+1. 只要求两张 TSV 的**列名**（`variable/metric/replicate/value` 与 `variable/D_obs/I_obs`），
+   其余随便；
+2. 换成别的相似度指标（Jaccard、Sørensen、AUC 差…）时，把 `--xlabel`、`--legend-d`、
+   `--legend-i` 一起改掉，公式本身不用进这个脚本；
+3. 配色 / 字体是脚本顶部的常量（`C_D`、`C_I`、`FONT`），改一行即可；
+4. 面板数、列数、顺序、面板字母全部是参数；
+5. `compute_te_overlap.py` 只是本项目的算例，换数据时自己写一段算 D/I 的代码
+   （公式见 §5），或者直接喂 ENMTools 的输出（§6）。
 
 ---
 
@@ -192,4 +220,5 @@ null <- replicate(100, {
 | `data/null_distributions.tsv` | 100×10×2 条零分布记录（画图输入） |
 | `data/overlap_summary.tsv` | 观测 vs 零分布汇总 + 置换 p 值 |
 | `niche_overlap_null.png` / `.pdf` | 成品图（5×2 面板） |
+| `example/make_example.py` | 合成示例数据生成器（与真实数据无关，供复用试验） |
 | `CAPTIONS.md` | 中英双语图注 |
