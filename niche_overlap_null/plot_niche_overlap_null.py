@@ -103,7 +103,7 @@ def draw_panel(ax, var: str, d_null: np.ndarray, i_null: np.ndarray,
     hi = max(d_null.max(), i_null.max(), d_obs, i_obs)
     span = hi - lo if hi > lo else 0.02
     # 左边留出 30% 的空槽放 D = / I = 文本（原图也是左边大片留白）
-    xlo = 0.0 if lo < 0.06 else lo - 0.26 * span
+    xlo = 0.0 if lo < 0.06 else lo - 0.36 * span
     xhi = hi + 0.03 * span
 
     if edges is None:
