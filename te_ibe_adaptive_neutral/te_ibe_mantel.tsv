@@ -1,0 +1,5 @@
+cohort	class	dist	r	p	n_pairs	n_loci	rule
+cn14	adaptive	geo	0.272833247031668	0.1387	91	366	外部位点表 (n=366)
+cn14	adaptive	env	0.353514563981448	0.0668	91	366	外部位点表 (n=366)
+cn14	neutral	geo	-0.0194537930063761	0.3384	91	9399	外部位点表 (n=366)
+cn14	neutral	env	0.0583770554545317	0.3114	91	9399	外部位点表 (n=366)
