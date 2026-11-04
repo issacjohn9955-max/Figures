@@ -1,0 +1,9 @@
+trait	label
+BARE	Areas with minimal vegetation
+BIO_2	Mean diurnal range
+CROPLAND	Land used for crops
+PREC_08	Precipitation in August
+SHRUBS	Woody plants
+SRAD_11	Solar radiation in November
+TREES	Land covered by tree foliage
+WATER	Areas covered by lakes and rivers
