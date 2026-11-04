@@ -6,7 +6,8 @@ breeds come from. Two views of the same table:
 * **province choropleth** (`china_sampling_map.*`) — four-class fill, MaxEnt-map
   visual language;
 * **point map** (`china_sampling_points.*`) — every collection site plotted at its
-  county/city coordinates, labelled with the place name, plus a zoom inset for the
+  county/city coordinates, English-only, **no text on the map** (journal style: the
+  site list belongs in the caption or a table), plus a small zoom inset for the
   crowded southwest cluster.
 
 ![Province map](china_sampling_map.png)
@@ -81,7 +82,8 @@ Sites whose record is only region-level:
 ```bash
 python3 plot_china_sampling_map.py --lang en      # province map
 python3 plot_china_sampling_map.py --lang zh
-python3 plot_china_sampling_points.py             # point map + inset
+python3 plot_china_sampling_points.py             # point map + inset (no labels)
+python3 plot_china_sampling_points.py --labels    # draft with place names
 ```
 
 Options: `--counts` / `--sites`, `--geo`, `--maritime`, `--outdir`, `--stem`.
@@ -122,9 +124,11 @@ boundary (`bzdt.ch.mnr.gov.cn`) and print its approval number (审图号).
   reference figure it reproduces.
 * Marker colour and area both encode the individual count (redundant encoding);
   `region`-level records get a dashed ring.
-* Sites are labelled with the 2–3 character place name (黄山, 淅川, 长汀 …) rather
-  than a number or the breed name: it fits at national scale, while the breed ↔
-  place mapping stays in the source table.
+* No place/breed text is drawn on the map — published maps of this kind carry the
+  site list in the caption. `--labels` adds the 2–3 character place names for
+  internal drafts only; the submitted figure runs without it.
+* Land fill is a very light neutral (`#F4F7F9`) so the country reads as a shape
+  without competing with the markers; sea stays white.
 * National border is a thick stroke under the fills (the fill covers its inner
   half), so border and fill share one vector path and can never misregister.
 * The southwest cluster gets a zoom inset (`103.4–111.0 E, 24.1–28.6 N`) with the

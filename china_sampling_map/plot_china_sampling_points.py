@@ -40,7 +40,7 @@ CLASS_LABELS = ["1–9", "10–19", "20–29", "≥30"]
 
 TEXT = "#273746"
 GRID = "#A9B2BB"
-FILL = "#FFFFFF"
+FILL = "#F4F7F9"
 FONT = ["Arial", "Helvetica", "Liberation Sans", "DejaVu Sans"]
 
 INSET = (102.6, 111.9, 23.6, 29.2)
@@ -124,6 +124,8 @@ def main(argv=None) -> int:
     ap.add_argument("--maritime", default=str(HERE / "data" / "china_maritime.geojson"))
     ap.add_argument("--outdir", default=str(HERE))
     ap.add_argument("--stem", default="china_sampling_points")
+    ap.add_argument("--labels", action="store_true",
+                    help="draw place-name labels (off by default, journal style)")
     args = ap.parse_args(argv)
 
     for f in (args.geo, args.maritime, args.sites):
@@ -171,6 +173,11 @@ def main(argv=None) -> int:
 
     for r, s in zip(rows, sizes):
         marker(ax, r, s)
+        if args.labels and not (INSET[0] <= r["lon"] <= INSET[1]
+                                and INSET[2] <= r["lat"] <= INSET[3]):
+            ax.text(r["lon"] + r["dx"], r["lat"] + r["dy"], r["label"],
+                    fontsize=5.3, ha="center", va="center", zorder=9, color=TEXT,
+                    path_effects=[pe.withStroke(linewidth=1.4, foreground="white")])
 
     # --- zoom inset -----------------------------------------------------
     iax = fig.add_axes([0.035, 0.055, 0.205, 0.235])
@@ -212,7 +219,7 @@ def main(argv=None) -> int:
             va="bottom", fontsize=5.8)
 
     # legend: vertical stack over the Bay of Bengal (empty area west of the SCS)
-    lx, ly, dy = 0.262, 0.330, 0.030
+    lx, ly, dy = 0.258, 0.372, 0.030
     ax.text(lx, ly + 0.026, "Adopted individuals", transform=ax.transAxes,
             fontsize=5.8, va="bottom")
     for i, (c, lab) in enumerate(zip(CLASS_COLORS, CLASS_LABELS)):
