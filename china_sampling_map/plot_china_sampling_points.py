@@ -41,8 +41,7 @@ CLASS_LABELS = ["1–9", "10–19", "20–29", "≥30"]
 TEXT = "#273746"
 GRID = "#A9B2BB"
 FILL = "#FFFFFF"
-FONT = ["PingFang SC", "Heiti SC", "Songti SC", "Arial Unicode MS",
-        "Noto Sans CJK SC", "DejaVu Sans"]
+FONT = ["Arial", "Helvetica", "Liberation Sans", "DejaVu Sans"]
 
 INSET = (102.6, 111.9, 23.6, 29.2)
 
@@ -172,10 +171,6 @@ def main(argv=None) -> int:
 
     for r, s in zip(rows, sizes):
         marker(ax, r, s)
-        if not (INSET[0] <= r["lon"] <= INSET[1] and INSET[2] <= r["lat"] <= INSET[3]):
-            ax.text(r["lon"] + r["dx"], r["lat"] + r["dy"], r["label"],
-                    fontsize=5.3, ha="center", va="center", zorder=9, color=TEXT,
-                    path_effects=[pe.withStroke(linewidth=1.4, foreground="white")])
 
     # --- zoom inset -----------------------------------------------------
     iax = fig.add_axes([0.035, 0.055, 0.205, 0.235])
@@ -184,9 +179,6 @@ def main(argv=None) -> int:
         if not (INSET[0] <= r["lon"] <= INSET[1] and INSET[2] <= r["lat"] <= INSET[3]):
             continue
         marker(iax, r, s)
-        iax.text(r["lon"] + r["dx"] * 0.75, r["lat"] + r["dy"] * 0.75, r["label"],
-                 fontsize=5.6, ha="center", va="center", zorder=9, color=TEXT,
-                 path_effects=[pe.withStroke(linewidth=1.3, foreground="white")])
     iax.set_xlim(INSET[0], INSET[1])
     iax.set_ylim(INSET[2], INSET[3])
     iax.set_aspect(1.0 / np.cos(np.deg2rad(26)), adjustable="box")
@@ -196,7 +188,7 @@ def main(argv=None) -> int:
         sp.set_visible(True)
         sp.set_linewidth(0.5)
         sp.set_color(GRID)
-    iax.set_title("黔西—湘西（放大）", fontsize=5.6, pad=2.0, color=TEXT)
+    iax.set_title("Southwest China, enlarged", fontsize=5.6, pad=2.0, color=TEXT)
 
     ax.add_patch(Rectangle((INSET[0], INSET[2]), INSET[1] - INSET[0],
                            INSET[3] - INSET[2], fill=False, edgecolor=GRID,
@@ -221,8 +213,8 @@ def main(argv=None) -> int:
 
     # legend: vertical stack over the Bay of Bengal (empty area west of the SCS)
     lx, ly, dy = 0.262, 0.330, 0.030
-    ax.text(lx, ly + 0.026, "采纳个体数", transform=ax.transAxes, fontsize=5.8,
-            va="bottom")
+    ax.text(lx, ly + 0.026, "Adopted individuals", transform=ax.transAxes,
+            fontsize=5.8, va="bottom")
     for i, (c, lab) in enumerate(zip(CLASS_COLORS, CLASS_LABELS)):
         yy = ly - i * dy
         ax.scatter(lx + 0.010, yy, s=24, c=c, edgecolors="white", linewidths=0.4,
@@ -233,8 +225,8 @@ def main(argv=None) -> int:
     ax.scatter(lx + 0.010, yy, s=24, facecolors="none", edgecolors=TEXT,
                linewidths=0.5, linestyles="--", transform=ax.transAxes,
                clip_on=False, zorder=21)
-    ax.text(lx + 0.024, yy, "仅到州/平原级", transform=ax.transAxes, fontsize=5.5,
-            va="center")
+    ax.text(lx + 0.024, yy, "region-level only", transform=ax.transAxes,
+            fontsize=5.5, va="center")
 
     # scale bar
     km, bx, by, bh = 500, 0.800, 0.045, 0.008
@@ -247,14 +239,16 @@ def main(argv=None) -> int:
             ha="center", va="bottom", fontsize=5.2)
 
     total = int(counts.sum())
-    fig.text(0.012, 0.962, "中国地方鸡种重测序采样点分布", fontsize=8.6, ha="left")
-    fig.text(0.012, 0.933,
-             f"{total} 只个体 · {len(rows)} 个采样点 · "
-             f"{sum(r['records'] for r in rows)} 条记录（按县/市定位；虚线圆为州/平原级）",
-             fontsize=5.9, color="#5A6B7B", ha="left")
+    fig.text(0.012, 0.963,
+             "Chinese indigenous chicken breeds: WGS sampling sites",
+             fontsize=8.0, ha="left")
+    fig.text(0.012, 0.937,
+             f"{total} individuals at {len(rows)} sites "
+             f"({sum(r['records'] for r in rows)} records); coordinates of county seats",
+             fontsize=5.8, color="#5A6B7B", ha="left")
     fig.text(0.012, 0.010,
-             "数据源：label1029.xlsx 蓝色标注行（FF0070C0）；坐标取县/市政府驻地；"
-             "配色取 style 库 pangenome_spectrum。",
+             "Source: label1029.xlsx, rows shaded blue (FF0070C0) or tagged as in-house; "
+             "palette: pangenome_spectrum.",
              fontsize=4.6, color="#6B7A88")
 
     out = Path(args.outdir)
