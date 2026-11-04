@@ -38,23 +38,29 @@ script_dir <- local({
 # 向上找 figure-style/style/ggplot2_theme.R：脚本无论在 pca_climate_zone/ 还是
 # figures_repo/pca_climate_zone/ 下都能定位到风格层
 find_style <- function(start) {
+  # 优先级：显式环境变量 > 本仓库自带的 style/ 快照 > 并排的 figure-style 仓库
   env <- Sys.getenv("FIGURE_STYLE_DIR")
   if (nzchar(env)) {
     f <- file.path(env, "style", "ggplot2_theme.R")
     if (file.exists(f)) return(normalizePath(f))
     stop("FIGURE_STYLE_DIR=", env, " 下没有 style/ggplot2_theme.R", call. = FALSE)
   }
-  d <- normalizePath(start, mustWork = FALSE)
-  for (i in seq_len(8)) {
-    f <- file.path(d, "figure-style", "style", "ggplot2_theme.R")
-    if (file.exists(f)) return(normalizePath(f))
-    f2 <- file.path(d, "style", "ggplot2_theme.R")
-    if (file.exists(f2)) return(normalizePath(f2))
-    if (identical(dirname(d), d)) break
-    d <- dirname(d)
+  walk_up <- function(rel) {
+    d <- normalizePath(start, mustWork = FALSE)
+    for (i in seq_len(10)) {
+      f <- file.path(d, rel)
+      if (file.exists(f)) return(normalizePath(f))
+      if (identical(dirname(d), d)) break
+      d <- dirname(d)
+    }
+    NULL
   }
-  stop("找不到 figure-style/style/ggplot2_theme.R：把 figure-style/ 放在本仓库上一级，\n",
-       "或设 FIGURE_STYLE_DIR 指向它（含 style/ 子目录）", call. = FALSE)
+  hit <- walk_up(file.path("style", "ggplot2_theme.R"))
+  if (!is.null(hit)) return(hit)                       # 仓库内快照（克隆即可跑）
+  hit <- walk_up(file.path("figure-style", "style", "ggplot2_theme.R"))
+  if (!is.null(hit)) return(hit)                       # 并排的开发仓库
+  stop("找不到风格层 style/ggplot2_theme.R：本仓库根应有 style/ 快照（见 style/README.md），\n",
+       "或设 FIGURE_STYLE_DIR 指向 figure-style 仓库。", call. = FALSE)
 }
 source(find_style(script_dir))
 

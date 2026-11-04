@@ -1,0 +1,40 @@
+# 注意：mplstyle 里 '#' 会被当成注释起始符，所以色值不能写在这里。
+# 颜色统一由 figure_style.use_style() 从 theme.json 注入；单纯 plt.style.use()
+# 只能拿到尺寸与线宽。这也是本仓库把 theme.json 当唯一事实来源的原因。
+figure.facecolor: white
+axes.facecolor: white
+savefig.facecolor: white
+savefig.transparent: False
+
+font.family: sans-serif
+font.sans-serif: Arial, Helvetica, Liberation Sans, DejaVu Sans
+font.size: 7
+axes.titlesize: 7
+axes.labelsize: 7
+xtick.labelsize: 6.5
+ytick.labelsize: 6.5
+legend.fontsize: 6.5
+legend.frameon: False
+legend.title_fontsize: 6.5
+
+axes.linewidth: 0.55
+axes.spines.top: False
+axes.spines.right: False
+axes.grid: False
+xtick.major.width: 0.55
+ytick.major.width: 0.55
+xtick.major.size: 2.4
+ytick.major.size: 2.4
+xtick.minor.visible: False
+ytick.minor.visible: False
+xtick.direction: out
+ytick.direction: out
+
+lines.linewidth: 0.9
+lines.markersize: 3.1
+patch.linewidth: 0.4
+errorbar.capsize: 2
+
+pdf.fonttype: 42
+ps.fonttype: 42
+savefig.dpi: 600

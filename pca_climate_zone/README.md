@@ -5,7 +5,8 @@ PC1/PC2 散点、按 **Climate zone** 六区着色 + 不同符号，六区图例
 轴标题与刻度加粗。
 
 本模块把这张图拆成"**一个可复用绘图脚本 + 两套本项目真实数据的成品图**"，
-所有字号 / 线宽 / 画幅 / 配色来自 `../figure-style/style/*.json`，不写死任何十六进制色值。
+所有字号 / 线宽 / 画幅 / 配色来自仓库根的 `style/`（figure-style 的快照），
+不写死任何十六进制色值。
 
 ---
 
@@ -37,9 +38,8 @@ PC1/PC2 散点、按 **Climate zone** 六区着色 + 不同符号，六区图例
 
 
 ```bash
-# 依赖：R ≥ 4.1 + ggplot2、jsonlite；figure-style 仓库的 style/ 层。两种找法：
-#   ① 把 figure-style/ 放在本仓库上一级（默认，脚本自动向上查找）
-#   ② 或设 FIGURE_STYLE_DIR=/path/to/figure-style
+# 依赖：R ≥ 4.1 + ggplot2、jsonlite；风格层用本仓库自带的 style/ 快照，克隆即可跑。
+#   需要临时换一份规范时：FIGURE_STYLE_DIR=/path/to/figure-style Rscript ...
 cd pca_climate_zone
 
 Rscript plot_pca_climate_zone.R \

@@ -52,8 +52,20 @@ Rscript make_synthetic_preview.R               # 6-zone layout check (synthetic)
 
 Requirements: Python 3.9+, `numpy`, `matplotlib` for the maps (no GDAL/geopandas
 needed — the China boundary is read straight from GeoJSON); R ≥ 4.1 with
-`ggplot2`, `patchwork` and `scales` for the GEA panels. The `pca_climate_zone`
-module additionally reads its palette, type sizes and page presets from a sibling
-`figure-style/` checkout (`style/theme.json`, `style/palettes.json`,
-`style/ggplot2_theme.R`) — put it next to this repository, or point the
-`FIGURE_STYLE_DIR` environment variable at it.
+`ggplot2`, `patchwork` and `scales` for the GEA panels.
+
+## Style snapshot
+
+`style/` is a read-only snapshot of the [`figure-style`](style/README.md) kit
+(`theme.json`, `palettes.json`, `ggplot2_theme.R`, `matplotlib.mplstyle`) so that
+cloning this repository is enough to regenerate a figure. Modules look for the
+style layer in this order: `$FIGURE_STYLE_DIR` → this repository's `style/`
+snapshot → a sibling `figure-style/` checkout.
+
+Because it is a snapshot it does **not** update itself. After editing the source
+kit, refresh it and re-render the affected figures:
+
+```bash
+bash style/sync_from_figure_style.sh          # copy + record the source commit in style/VENDORED.md
+bash style/sync_from_figure_style.sh --check  # compare only; exit 1 on drift
+```

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "name": "publication figure theme",
+  "derived_from": "1577377232/Genomics-Figure-Styles v2.0 (figures/gwas_manhattan/theme.json)",
+  "figure": {
+    "unit": "mm",
+    "default_preset": "double_col",
+    "presets": {
+      "single_col": { "width": 89, "height": 60 },
+      "double_col": { "width": 183, "height": 76 },
+      "wide_panel": { "width": 260, "height": 75 }
+    },
+    "background": "#FFFFFF",
+    "dpi": 600,
+    "formats": ["pdf", "png"],
+    "pdf_text_vector": true,
+    "pdf_rasterize_dense_points": true
+  },
+  "typography": {
+    "family": ["Arial", "Helvetica", "Liberation Sans", "DejaVu Sans"],
+    "pt": {
+      "title": 7,
+      "axis": 7,
+      "tick": 6.5,
+      "legend": 6.5,
+      "note": 6
+    },
+    "min_pt": 5,
+    "title_case": "sentence"
+  },
+  "lines": {
+    "spines": ["left", "bottom"],
+    "spine_pt": 0.55,
+    "grid": false,
+    "tick_length_pt": 2.4,
+    "tick_width_pt": 0.55,
+    "reference_line": { "style": "dashed", "width_pt": 0.5 }
+  },
+  "colors": {
+    "ink": "#273746",
+    "threshold": "#A9B2BB",
+    "hairline": "#E3E9ED",
+    "emphasis_outline": "#253246"
+  },
+  "marks": {
+    "point_diameter_mm": 1.1,
+    "point_alpha": 0.7,
+    "line_width_pt": 0.9,
+    "bar_edge_pt": 0.4,
+    "marker_edge_pt": 0.35,
+    "legend_marker_scale": 1.0
+  },
+  "rules": {
+    "no_grid": true,
+    "no_3d": true,
+    "no_gradient_fill": true,
+    "no_drop_shadow": true,
+    "no_rainbow_colormaps": true,
+    "max_categorical_colors": 6,
+    "color_encodes_category_not_value": true,
+    "threshold_needs_provenance": true,
+    "shape_as_redundant_encoding": true
+  }
+}
