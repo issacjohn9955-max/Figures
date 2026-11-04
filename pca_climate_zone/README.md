@@ -30,6 +30,12 @@ PC1/PC2 散点、按 **Climate zone** 六区着色 + 不同符号，六区图例
 
 ## 2. 复现命令
 
+> 仓库根 `.gitignore` 默认忽略 `data/`（防止省界 geojson 等大文件入库），本模块的派生小表
+> 已在该文件里开了白名单（`!pca_climate_zone/data/`、`!pca_climate_zone/data/*.tsv`）。
+> 新建模块时若也要提交输入表，照此在 `.gitignore` 加一条例外，否则 `git add` 会静默跳过。
+> `data/synthetic_6zone_*.tsv` 由 `make_synthetic_preview.R` 自动生成。
+
+
 ```bash
 # 依赖：R ≥ 4.1 + ggplot2、jsonlite；与本仓库并排的 figure-style/ 仓库（提供 style/ 层）
 cd pca_climate_zone
