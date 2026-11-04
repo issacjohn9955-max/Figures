@@ -19,6 +19,16 @@
 #   * `series` sets the polygons; IN FILE ORDER they define the legend order.
 #   * `value` is the plotted count.
 #
+# Deliberate overrides of the house figure-style defaults, and why:
+#   * colours are the source panel's own hex (#FC4E07 / #00AFBB) instead of
+#     palettes.json slots - this module exists to match one published panel
+#     exactly, and the ChickenTE instance must sit next to that reproduction;
+#   * every text element is bold and the panel letter is drawn even though the
+#     script emits a single panel - both are copied from the source layout so a
+#     pasted-in panel reads as part of the same figure;
+#   * font sizes are absolute pt measured off the source (5.4 / 5.0 / 5.5), not
+#     type_scale multiples, for the same reason.
+#
 # Usage:
 #   Rscript plot_radar_drivers.R --input counts.tsv --out radar \
 #           --ymax 3200 --breaks 0,1600,3200

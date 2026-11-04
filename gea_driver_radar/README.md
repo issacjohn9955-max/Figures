@@ -147,6 +147,24 @@ To switch to the reference structure, add a third column of gene counts and pass
 other change. The gene layer follows from a GFF (chicken GRCg6a) plus a
 `bedtools closest` / `intersect` call on the candidate loci.
 
+## Deliberate overrides of the house style
+
+This module reproduces one specific published panel, so it knowingly departs
+from the `figure-style` defaults:
+
+* **colours are hex, not palette slots** — `#FC4E07` / `#00AFBB` are the source
+  panel's own colours; the ChickenTE instance has to sit next to that
+  reproduction and read as the same figure;
+* **everything is bold, and a panel letter is drawn although the output is a
+  single panel** — both copied from the source layout;
+* **font sizes are absolute pt measured off the source** (5.4 / 5.0 / 5.5), not
+  `type_scale` multiples;
+* the script is self-contained (`ggplot2` only) and does not load
+  `figure-style/style/ggplot2_theme.R`, because the geometry is drawn in
+  millimetres and the source spec, not a shared theme, drives every constant.
+
+Swap `--colours` if a figure has to drop back into the palette system.
+
 ## Notes
 
 * The PNG written by R's macOS `quartz` device carries a *Generic RGB* ICC
