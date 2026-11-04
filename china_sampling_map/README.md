@@ -6,7 +6,7 @@ breeds come from. Two views of the same table:
 * **province choropleth** (`china_sampling_map.*`) — four-class fill, MaxEnt-map
   visual language;
 * **point map** (`china_sampling_points.*`) — every collection site plotted at its
-  county/city coordinates, with a numbered breed list and a zoom inset for the
+  county/city coordinates, labelled with the place name, plus a zoom inset for the
   crowded southwest cluster.
 
 ![Province map](china_sampling_map.png)
@@ -69,7 +69,7 @@ Sites whose record is only region-level:
 | Path | Role |
 |---|---|
 | `china_sampling_counts.tsv` | Province aggregates — input of the choropleth |
-| `china_sampling_sites.tsv` | Site coordinates — input of the point map |
+| `china_sampling_sites.tsv` | Site coordinates + short place label + label offset — input of the point map |
 | `plot_china_sampling_map.py` | Choropleth renderer (matplotlib + GeoJSON) |
 | `plot_china_sampling_points.py` | Point-map renderer (same stack, plus zoom inset) |
 | `data/*.geojson` | Boundary inputs (see *Boundary data*) |
@@ -113,10 +113,18 @@ boundary (`bzdt.ch.mnr.gov.cn`) and print its approval number (审图号).
 * Province map 149 × 154 mm, point map 189 × 156 mm; white background, no grid,
   no gradients or shadows.
 * Text 5.5–7 pt, PingFang SC / Heiti SC for Chinese, Arial/DejaVu Sans fallback.
-* Four-class ramp `#B0A81E / #E8891B / #C8102E / #7A1020` — the MaxEnt convention,
-  chosen because the target figure language is the suitability map.
+* Point map uses the house palette from
+  [1577377232/Genomics-Figure-Styles](https://github.com/1577377232/Genomics-Figure-Styles)
+  (`palettes.json` → `pangenome_spectrum`, the theme's default):
+  class ramp `#B4AD74 → #7BB6AC → #5899B2 → #386C8C` (four steps of the six-colour
+  cycle, ordered light → dark), text/border `#273746`, province lines `#A9B2BB`.
+  No invented colours; the choropleth keeps the MaxEnt ramp because it mirrors the
+  reference figure it reproduces.
 * Marker colour and area both encode the individual count (redundant encoding);
   `region`-level records get a dashed ring.
+* Sites are labelled with the 2–3 character place name (黄山, 淅川, 长汀 …) rather
+  than a number or the breed name: it fits at national scale, while the breed ↔
+  place mapping stays in the source table.
 * National border is a thick stroke under the fills (the fill covers its inner
   half), so border and fill share one vector path and can never misregister.
 * The southwest cluster gets a zoom inset (`103.4–111.0 E, 24.1–28.6 N`) with the

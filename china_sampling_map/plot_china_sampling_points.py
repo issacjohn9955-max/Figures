@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-China sampling sites — latitude/longitude point map.
+China sampling sites — latitude/longitude point map, house style.
 
-Each marker is one collection site (county / city seat, or the named production
-region when the record is only region-level). Marker colour and size encode the
-number of adopted individuals; the numbered list on the right carries breed,
-origin and counts.
+Colours come from the style library (1577377232/Genomics-Figure-Styles,
+palettes.json → pangenome_spectrum) and its theme colours:
+  class ramp   #B4AD74 → #7BB6AC → #5899B2 → #386C8C
+  text / axis  #273746   province line #A9B2BB
 
     python3 plot_china_sampling_points.py
 """
@@ -30,16 +30,21 @@ HERE = Path(__file__).resolve().parent
 
 LON = (72.0, 136.0)
 LAT = (3.0, 55.0)
-FIG_W, FIG_H = 7.45, 6.15          # inches ≈ 189 × 156 mm
+FIG_W, FIG_H = 6.95, 6.30          # inches ≈ 177 × 160 mm
 DPI_PNG = 600
 
-CLASS_COLORS = ["#B0A81E", "#E8891B", "#C8102E", "#7A1020"]
+# --- house palette (pangenome_spectrum) -------------------------------------
+CLASS_COLORS = ["#B4AD74", "#7BB6AC", "#5899B2", "#386C8C"]
 BREAKS = [10, 20, 30]              # 1–9 / 10–19 / 20–29 / ≥30
 CLASS_LABELS = ["1–9", "10–19", "20–29", "≥30"]
 
 TEXT = "#273746"
+GRID = "#A9B2BB"
+FILL = "#FFFFFF"
 FONT = ["PingFang SC", "Heiti SC", "Songti SC", "Arial Unicode MS",
         "Noto Sans CJK SC", "DejaVu Sans"]
+
+INSET = (102.6, 111.9, 23.6, 29.2)
 
 
 def _geoms(obj):
@@ -86,6 +91,33 @@ def klass(n: int) -> int:
     return sum(n >= b for b in BREAKS)
 
 
+def draw_base(ax, prov, maritime, lw_nation=0.9, lw_prov=0.22, lw_mar=0.8):
+    all_rings = [r for v in prov.values() for r in v]
+    # 小岛单独用细线，否则粗描边会把它们糊成一团
+    big = [r for r in all_rings if max(np.ptp(r[:, 0]), np.ptp(r[:, 1])) > 0.45]
+    small = [r for r in all_rings if max(np.ptp(r[:, 0]), np.ptp(r[:, 1])) <= 0.45]
+    ax.add_collection(LineCollection(small, colors=TEXT, linewidths=0.32, zorder=1))
+    ax.add_collection(LineCollection(big, colors=TEXT, linewidths=lw_nation, zorder=1))
+    for rings in prov.values():
+        ax.add_patch(PathPatch(rings_to_path(rings), facecolor=FILL,
+                               edgecolor="none", zorder=2))
+    ax.add_collection(LineCollection(all_rings, colors=GRID,
+                                     linewidths=lw_prov, zorder=3))
+    if maritime:
+        ax.add_collection(LineCollection(maritime, colors=TEXT,
+                                         linewidths=lw_mar, zorder=4))
+
+
+def marker(ax, r, s):
+    c = CLASS_COLORS[klass(r["individuals"])]
+    if r["precision"] == "region":
+        ax.scatter(r["lon"], r["lat"], s=s, facecolors="none", edgecolors=c,
+                   linewidths=1.0, linestyles="--", zorder=8)
+    else:
+        ax.scatter(r["lon"], r["lat"], s=s, c=c, edgecolors="white",
+                   linewidths=0.5, zorder=8)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--sites", default=str(HERE / "china_sampling_sites.tsv"))
@@ -128,65 +160,33 @@ def main(argv=None) -> int:
     maritime = []
     for geom, _ in _geoms(json.loads(Path(args.maritime).read_text())):
         maritime += _lines(geom)
-    all_rings = [r for v in prov.values() for r in v]
 
     fig = plt.figure(figsize=(FIG_W, FIG_H))
-    ax = fig.add_axes([0.004, 0.03, 0.630, 0.885])
-    axl = fig.add_axes([0.648, 0.03, 0.348, 0.885])
-    axl.axis("off")
+    ax = fig.add_axes([0.012, 0.028, 0.976, 0.880])
 
-    # --- map base -------------------------------------------------------
-    ax.add_collection(LineCollection(all_rings, colors="black", linewidths=2.0,
-                                     zorder=1))
-    for rings in prov.values():
-        ax.add_patch(PathPatch(rings_to_path(rings), facecolor="#F4F4F2",
-                               edgecolor="none", zorder=2))
-    ax.add_collection(LineCollection(all_rings, colors="#9AA5AE", linewidths=0.22,
-                                     zorder=3))
-    ax.add_collection(LineCollection(maritime, colors="black", linewidths=0.85,
-                                     zorder=4))
+    draw_base(ax, prov, maritime)
 
-    # --- points ---------------------------------------------------------
-    INSET = (103.4, 111.0, 24.1, 28.6)
     counts = np.array([r["individuals"] for r in rows], dtype=float)
-    r_mm = 0.95 + 0.75 * np.sqrt(counts / counts.max())     # 1.0–1.7 mm
-    s = (r_mm * 2.835) ** 2 * np.pi
+    r_mm = 1.15 + 0.95 * np.sqrt(counts / counts.max())     # 1.25–2.1 mm
+    sizes = (r_mm * 2.835) ** 2 * np.pi
 
-    for r, size in zip(rows, s):
-        c = CLASS_COLORS[klass(r["individuals"])]
-        if r["precision"] == "region":
-            ax.scatter(r["lon"], r["lat"], s=size, facecolors="none",
-                       edgecolors=c, linewidths=0.9, linestyles="--", zorder=8)
-        else:
-            ax.scatter(r["lon"], r["lat"], s=size, c=c, edgecolors="white",
-                       linewidths=0.45, zorder=8)
+    for r, s in zip(rows, sizes):
+        marker(ax, r, s)
         if not (INSET[0] <= r["lon"] <= INSET[1] and INSET[2] <= r["lat"] <= INSET[3]):
-            ax.text(r["lon"] + r["dx"], r["lat"] + r["dy"], str(r["id"]),
-                    fontsize=5.4, ha="center", va="center", zorder=9, color=TEXT,
-                    path_effects=[pe.withStroke(linewidth=1.1, foreground="white")])
+            ax.text(r["lon"] + r["dx"], r["lat"] + r["dy"], r["label"],
+                    fontsize=5.3, ha="center", va="center", zorder=9, color=TEXT,
+                    path_effects=[pe.withStroke(linewidth=1.4, foreground="white")])
 
-    # --- zoom inset: 黔西—湘西 (points 7/8/9/10/11/21 挤在一起) ----------
-    iax = fig.add_axes([0.045, 0.058, 0.225, 0.262])
-    iax.add_collection(LineCollection(all_rings, colors="black", linewidths=1.4,
-                                      zorder=1))
-    for rings in prov.values():
-        iax.add_patch(PathPatch(rings_to_path(rings), facecolor="#F4F4F2",
-                                edgecolor="none", zorder=2))
-    iax.add_collection(LineCollection(all_rings, colors="#9AA5AE", linewidths=0.35,
-                                      zorder=3))
-    for r, size in zip(rows, s):
+    # --- zoom inset -----------------------------------------------------
+    iax = fig.add_axes([0.035, 0.055, 0.205, 0.235])
+    draw_base(iax, prov, [], lw_nation=0.9, lw_prov=0.32)
+    for r, s in zip(rows, sizes):
         if not (INSET[0] <= r["lon"] <= INSET[1] and INSET[2] <= r["lat"] <= INSET[3]):
             continue
-        c = CLASS_COLORS[klass(r["individuals"])]
-        if r["precision"] == "region":
-            iax.scatter(r["lon"], r["lat"], s=size, facecolors="none",
-                        edgecolors=c, linewidths=0.9, linestyles="--", zorder=8)
-        else:
-            iax.scatter(r["lon"], r["lat"], s=size, c=c, edgecolors="white",
-                        linewidths=0.45, zorder=8)
-        iax.text(r["lon"] + r["dx"] * 0.72, r["lat"] + r["dy"] * 0.72, str(r["id"]),
+        marker(iax, r, s)
+        iax.text(r["lon"] + r["dx"] * 0.75, r["lat"] + r["dy"] * 0.75, r["label"],
                  fontsize=5.6, ha="center", va="center", zorder=9, color=TEXT,
-                 path_effects=[pe.withStroke(linewidth=1.0, foreground="white")])
+                 path_effects=[pe.withStroke(linewidth=1.3, foreground="white")])
     iax.set_xlim(INSET[0], INSET[1])
     iax.set_ylim(INSET[2], INSET[3])
     iax.set_aspect(1.0 / np.cos(np.deg2rad(26)), adjustable="box")
@@ -195,14 +195,12 @@ def main(argv=None) -> int:
     for sp in iax.spines.values():
         sp.set_visible(True)
         sp.set_linewidth(0.5)
-        sp.set_color("#7A8A96")
+        sp.set_color(GRID)
+    iax.set_title("黔西—湘西（放大）", fontsize=5.6, pad=2.0, color=TEXT)
 
-    iax.set_title("黔西—湘西（放大）", fontsize=5.6, pad=2.0, color="#41505C")
-
-    # 主图上的范围框
     ax.add_patch(Rectangle((INSET[0], INSET[2]), INSET[1] - INSET[0],
-                           INSET[3] - INSET[2], fill=False, edgecolor="#7A8A96",
-                           linewidth=0.5, zorder=12))
+                           INSET[3] - INSET[2], fill=False, edgecolor=GRID,
+                           linewidth=0.55, zorder=12))
 
     ax.set_xlim(LON)
     ax.set_ylim(LAT)
@@ -212,73 +210,52 @@ def main(argv=None) -> int:
     for sp in ax.spines.values():
         sp.set_visible(False)
 
-    # north arrow + scale bar
-    x, y, size_ = 0.075, 0.845, 0.026
-    ax.plot([x, x], [y - size_, y + size_], transform=ax.transAxes, color=TEXT,
-            lw=0.6, clip_on=False)
-    ax.plot([x - size_, x + size_], [y, y], transform=ax.transAxes, color=TEXT,
-            lw=0.6, clip_on=False)
-    ax.text(x, y + size_ + 0.011, "N", transform=ax.transAxes, ha="center",
+    # north arrow
+    x, y, s_ = 0.070, 0.845, 0.024
+    ax.plot([x, x], [y - s_, y + s_], transform=ax.transAxes, color=TEXT, lw=0.6,
+            clip_on=False)
+    ax.plot([x - s_, x + s_], [y, y], transform=ax.transAxes, color=TEXT, lw=0.6,
+            clip_on=False)
+    ax.text(x, y + s_ + 0.010, "N", transform=ax.transAxes, ha="center",
             va="bottom", fontsize=5.8)
-    km, bx, by, bh = 500, 0.800, 0.042, 0.008
+
+    # legend: vertical stack over the Bay of Bengal (empty area west of the SCS)
+    lx, ly, dy = 0.262, 0.330, 0.030
+    ax.text(lx, ly + 0.026, "采纳个体数", transform=ax.transAxes, fontsize=5.8,
+            va="bottom")
+    for i, (c, lab) in enumerate(zip(CLASS_COLORS, CLASS_LABELS)):
+        yy = ly - i * dy
+        ax.scatter(lx + 0.010, yy, s=24, c=c, edgecolors="white", linewidths=0.4,
+                   transform=ax.transAxes, clip_on=False, zorder=21)
+        ax.text(lx + 0.024, yy, lab, transform=ax.transAxes, fontsize=5.5,
+                va="center")
+    yy = ly - 4.35 * dy
+    ax.scatter(lx + 0.010, yy, s=24, facecolors="none", edgecolors=TEXT,
+               linewidths=0.5, linestyles="--", transform=ax.transAxes,
+               clip_on=False, zorder=21)
+    ax.text(lx + 0.024, yy, "仅到州/平原级", transform=ax.transAxes, fontsize=5.5,
+            va="center")
+
+    # scale bar
+    km, bx, by, bh = 500, 0.800, 0.045, 0.008
     w = km / (111.32 * np.cos(np.deg2rad(35))) / (LON[1] - LON[0])
-    for i, c in enumerate(["black", "white"]):
-        ax.add_patch(Rectangle((bx + i * w / 2, by), w / 2, bh, transform=ax.transAxes,
-                               facecolor=c, edgecolor="black", lw=0.4, zorder=20))
+    for i, c in enumerate([TEXT, "white"]):
+        ax.add_patch(Rectangle((bx + i * w / 2, by), w / 2, bh,
+                               transform=ax.transAxes, facecolor=c,
+                               edgecolor=TEXT, lw=0.4, zorder=20))
     ax.text(bx + w / 2, by + bh + 0.007, f"{km} km", transform=ax.transAxes,
             ha="center", va="bottom", fontsize=5.2)
 
-    # --- title ----------------------------------------------------------
     total = int(counts.sum())
-    fig.text(0.012, 0.965, "中国地方鸡种重测序采样点分布", fontsize=9, ha="left")
-    fig.text(0.012, 0.936,
+    fig.text(0.012, 0.962, "中国地方鸡种重测序采样点分布", fontsize=8.6, ha="left")
+    fig.text(0.012, 0.933,
              f"{total} 只个体 · {len(rows)} 个采样点 · "
-             f"{sum(r['records'] for r in rows)} 条记录（按县/市定位）",
-             fontsize=6.2, color="#5A6B7B", ha="left")
-
-    # --- right-hand list ------------------------------------------------
-    axl.set_xlim(0, 1)
-    axl.set_ylim(0, 1)
-    axl.text(0.000, 0.995, "序号", fontsize=6.2, va="top", color="#5A6B7B")
-    axl.text(0.088, 0.995, "品种", fontsize=6.2, va="top", color="#5A6B7B")
-    axl.text(0.560, 0.995, "原产地", fontsize=6.2, va="top", color="#5A6B7B")
-    axl.text(0.985, 0.995, "个体数", fontsize=6.2, va="top", color="#5A6B7B",
-             ha="right")
-    axl.plot([0, 1], [0.972, 0.972], color="#C9D2D8", lw=0.5)
-
-    top, step = 0.952, 0.0392
-    for i, r in enumerate(rows):
-        y = top - i * step
-        if i % 2 == 0:
-            axl.add_patch(Rectangle((0.0, y - 0.015), 1.0, 0.031, facecolor="#F6F8F9",
-                                    edgecolor="none", zorder=0))
-        axl.text(0.005, y, f"{r['id']:>2}", fontsize=5.9, va="center")
-        axl.scatter(0.052, y, s=15, c=CLASS_COLORS[klass(r["individuals"])],
-                    edgecolors="white", linewidths=0.4, zorder=3,
-                    clip_on=False)
-        axl.text(0.088, y, r["breed_cn"], fontsize=5.9, va="center")
-        axl.text(0.560, y, f"{r['province_cn']}·{r['origin_cn']}", fontsize=5.9,
-                 va="center", color="#41505C")
-        axl.text(0.985, y, str(r["individuals"]), fontsize=5.9, va="center",
-                 ha="right")
-
-    # --- legend (bottom of list column) ---------------------------------
-    ly = 0.030
-    axl.text(0.000, ly + 0.030, "采纳个体数", fontsize=5.9, va="bottom")
-    for i, (c, lab) in enumerate(zip(CLASS_COLORS, CLASS_LABELS)):
-        x0 = 0.005 + i * 0.135
-        axl.scatter(x0 + 0.012, ly, s=26, c=c, edgecolors="white", linewidths=0.4,
-                    clip_on=False)
-        axl.text(x0 + 0.030, ly, lab, fontsize=5.6, va="center")
-    # dashed ring = region-level precision
-    axl.scatter(0.560, ly, s=26, facecolors="none", edgecolors="#41505C",
-                linewidths=0.5, linestyle="--", clip_on=False)
-    axl.text(0.585, ly, "仅到州/平原级", fontsize=5.6, va="center")
-
-    fig.text(0.012, 0.012,
-             "数据源：label1029.xlsx 蓝色标注行（FF0070C0）；坐标取县/市政府驻地，"
-             "仅省级记录的取产区代表点（虚线圆）。",
-             fontsize=4.8, color="#6B7A88")
+             f"{sum(r['records'] for r in rows)} 条记录（按县/市定位；虚线圆为州/平原级）",
+             fontsize=5.9, color="#5A6B7B", ha="left")
+    fig.text(0.012, 0.010,
+             "数据源：label1029.xlsx 蓝色标注行（FF0070C0）；坐标取县/市政府驻地；"
+             "配色取 style 库 pangenome_spectrum。",
+             fontsize=4.6, color="#6B7A88")
 
     out = Path(args.outdir)
     out.mkdir(parents=True, exist_ok=True)
