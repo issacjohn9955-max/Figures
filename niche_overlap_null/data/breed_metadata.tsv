@@ -1,0 +1,30 @@
+breed	sample_n	category	note
+1_惠阳胡须鸡	20	local	华南
+2_杏花鸡	14	local	华南
+3_清远麻鸡	20	local	华南
+4_广西三黄鸡	10	local	华南
+5_文昌鸡	9	local	华南(海南)
+6_郧阳大鸡	6	local	华中
+7_仙居鸡	6	local	华东
+8_白耳黄鸡	6	local	华东
+9_溧阳鸡	6	local	华东
+10_林甸鸡	6	local	东北
+11_济宁百日鸡	6	local	华北
+21_瓢鸡Piao(肉鸡)	1	local	西南(云南)
+22_广西瑶鸡	10	local	华南
+12_广西红原鸡	5	jungle_fowl	原鸡
+18_红原鸡(滇南亚种)	3	jungle_fowl	原鸡
+19_红原鸡(滇南亚种)	2	jungle_fowl	原鸡(同名第二批样本)
+23_红原鸡(bankiva亚种)	15	jungle_fowl	原鸡
+24_红原鸡(gallus亚种)	3	jungle_fowl	原鸡
+25_红原鸡(murghi亚种)	3	jungle_fowl	原鸡
+26_红原鸡(spadiceus亚种-越南)	2	jungle_fowl	原鸡
+27_绿原鸡(Gallus varius)	5	jungle_fowl	绿原鸡
+28_锡兰原鸡(Gallus lafayetii)	10	jungle_fowl	锡兰原鸡
+29_灰原鸡(Gallus sonneratii)	8	jungle_fowl	灰原鸡
+13_洛岛红鸡	29	commercial	商业蛋鸡
+14_白来航鸡	29	commercial	商业蛋鸡
+15_Cobb	18	commercial	商业肉鸡
+16_Ross肉鸡	6	commercial	商业肉鸡
+17_隐性白羽洛克鸡	31	commercial	商业品系
+20_科尼什Corish(肉鸡)	2	commercial	商业肉鸡
