@@ -66,10 +66,15 @@ Sites whose record is only region-level:
 | 19 | Jianghan | Xiantao 113.45 E, 30.36 N | record says only “Hubei, Jianghan Plain” |
 | 7 | Qiandongnan small-fragrant | Kaili 107.98 E, 26.58 N | prefecture-level record |
 
+## Captions
+
+Ready-to-paste captions (Chinese + English) are in [CAPTIONS.md](CAPTIONS.md).
+
 ## Files
 
 | Path | Role |
 |---|---|
+| `CAPTIONS.md` | Figure captions, Chinese (thesis) and English (journal) |
 | `china_sampling_counts.tsv` | Province aggregates — input of the choropleth |
 | `china_sampling_sites.tsv` | Site coordinates + short place label + label offset — input of the point map |
 | `plot_china_sampling_map.py` | Choropleth renderer (matplotlib + GeoJSON) |
