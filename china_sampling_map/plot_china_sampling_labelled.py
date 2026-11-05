@@ -40,7 +40,7 @@ LAT = (17.0, 55.0)
 FIG_W, FIG_H = 6.30, 4.33          # 160 x 110 mm
 DPI_PNG = 600
 
-MAP_AX = [0.205, 0.105, 0.590, 0.745]
+MAP_AX = [0.205, 0.085, 0.590, 0.775]
 DEFAULT_RELIEF = HERE / "data" / "relief" / "NE1_50M_SR_W.jpg"
 
 
@@ -167,13 +167,10 @@ def main(argv=None) -> int:
         sp.set_color(GRID)
 
     total = sum(r["individuals"] for r in rows)
-    fig.text(0.012, 0.955,
-             "Chinese indigenous chicken breeds: sampling sites",
-             fontsize=7.2, ha="left")
-    fig.text(0.012, 0.930,
+    fig.text(0.012, 0.962,
              f"{total} individuals at {len(rows)} sites (24 records, 10 provinces); "
              "circle area = individuals (2-40); names ordered by latitude",
-             fontsize=5.2, color="#5A6B7B", ha="left")
+             fontsize=5.4, color="#5A6B7B", ha="left")
 
     stem = Path(args.outdir) / args.stem
     for ext, kw in (("png", dict(dpi=DPI_PNG)), ("pdf", {})):
