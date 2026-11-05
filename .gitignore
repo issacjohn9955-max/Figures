@@ -11,4 +11,6 @@ __pycache__/
 !pca_climate_zone/data/*.tsv
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
+!world_distribution_map/data/relief/
+!world_distribution_map/data/relief/*.jpg
 Rplots.pdf

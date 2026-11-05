@@ -117,15 +117,23 @@ def draw_world(ax, geo_path, bm, lw_border=0.18, relief=None):
 
 
 def draw_china(ax, province_path, maritime_path, bm,
-               lw_prov=0.18, lw_mar=0.55):
+               lw_prov=0.18, lw_mar=0.55, relief=None):
     prov = {}
     for geom, props in _geoms(json.loads(Path(province_path).read_text())):
         name = props.get("name")
         if name and str(props.get("adcode")) != "100000_JD":
             prov[name] = _rings(geom)
     all_rings = [r for v in prov.values() for r in v]
-    ax.add_collection(PolyCollection(all_rings, facecolors=bm["land"],
-                                     edgecolors="none", zorder=1))
+    if relief:
+        from PIL import Image
+        img = np.asarray(Image.open(relief).convert("RGB"))
+        # the raster is a global plate-carree grid, so the China panel simply
+        # shows the 73-136E / 17-55N crop of the same image
+        ax.imshow(img, extent=(-180, 180, -90, 90), aspect="auto",
+                  zorder=0, interpolation="bilinear")
+    else:
+        ax.add_collection(PolyCollection(all_rings, facecolors=bm["land"],
+                                         edgecolors="none", zorder=1))
     ax.add_collection(LineCollection(all_rings, colors=bm["border"],
                                      linewidths=lw_prov, zorder=2))
     # national outline: thicker pass over the same rings looks acceptable at
@@ -267,7 +275,7 @@ def main(argv=None) -> int:
     style_axis(ax_w, WORLD_XLIM, WORLD_YLIM, 40.0)
 
     ax_c = fig.add_axes(CHINA_AX)
-    draw_china(ax_c, args.china_geo, args.maritime, bm)
+    draw_china(ax_c, args.china_geo, args.maritime, bm, relief=args.relief)
     style_axis(ax_c, CHINA_XLIM, CHINA_YLIM, 30.0)
 
     if args.labels:

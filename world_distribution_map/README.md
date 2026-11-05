@@ -4,7 +4,13 @@
 不压在地图上**，而是在地图左右两侧的空白里竖排，用 0.3 pt 的细直线牵到对应的点。
 家养动物种质资源 / 泛基因组论文的 Figure 1 基本都是这个套路。
 
-![world distribution map](fig_world_distribution.png)
+**彩色版（Natural Earth 1:50m 晕渲底图）：**
+
+![world distribution map — relief basemap](fig_world_distribution_relief.png)
+
+**极简版（纯白底 + 中性色，适合黑白打印和严格的期刊风格）：**
+
+![world distribution map — flat basemap](fig_world_distribution.png)
 
 ---
 
@@ -28,11 +34,15 @@
 | `data/world_countries_110m.geojson` | Natural Earth 1:110m 国界（public domain） |
 | `data/china_provinces.geojson` | 省级行政区（阿里 DataV，供示例使用） |
 | `data/china_maritime.geojson` | 南海断续线（绘制用，非审图底图） |
+| `data/relief/NE1_50M_SR_W.jpg` | Natural Earth 1:50m 晕渲栅格，降采样到 5400×2700（public domain）；`tools/fetch_relief.sh` 可重建 |
+| `tools/fetch_relief.sh` | 从 naciscdn 重新下载 88 MB 原始 tif 并降采样成上面那张 jpg |
 
 开关：
 
 ```bash
-python3 plot_world_distribution_map.py                 # paper 底图，带外侧标注
+python3 plot_world_distribution_map.py                 # 极简白底（默认），带外侧标注
+python3 plot_world_distribution_map.py --relief data/relief/NE1_50M_SR_W.jpg \
+        --stem fig_world_distribution_relief           # 彩色晕渲底图
 python3 plot_world_distribution_map.py --basemap terrain
 python3 plot_world_distribution_map.py --no-labels     # 只要点，不要字
 python3 plot_world_distribution_map.py --no-panel-letters
@@ -84,8 +94,10 @@ python3 plot_world_distribution_map.py --relief NE1_50M_SR_W.png   # 可选：�
    一定要手动填 `side`。
 4. **引导线交叉**：参考图本身也交叉（标签按纬度排、点按经度散），不是 bug。如果审稿人
    嫌乱，就只能手动排 `side`，或者改用编号 + 图注列表。
-5. **`--relief`**：Natural Earth 的 `NE1_50M_SR_W` 是 88 MB 的栅格，不随仓库分发；
-   要用就自己下载，传相对/绝对路径都行。
+5. **`--relief`**：仓库里带的是降采样后的 2.5 MB JPEG（5400×2700），够 600 dpi 用；
+   要更高分辨率就跑 `bash tools/fetch_relief.sh` 换回 88 MB 的原始 tif。
+   底图是 Natural Earth（public domain），但**它同样不是标准地图服务底图**，审图号的问题
+   和极简版一样存在。
 6. **示例数据**：`samples.tsv` 的 49 个点是为了撑满版式编的，别当成真实分布。
 
 ---

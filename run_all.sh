@@ -160,6 +160,9 @@ run_module variable_contribution variable_contribution variable_contribution.png
 if have_py matplotlib; then
   run_module world_distribution_map world_distribution_map fig_world_distribution.png -- \
     python3 plot_world_distribution_map.py
+  run_module world_distribution_map_relief world_distribution_map fig_world_distribution_relief.png -- \
+    python3 plot_world_distribution_map.py --relief data/relief/NE1_50M_SR_W.jpg \
+      --stem fig_world_distribution_relief
 else
   head2 "world_distribution_map"; say "  [skip] 缺 python 包 matplotlib"
   record skip world_distribution_map "缺 python 包"
