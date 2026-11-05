@@ -8,11 +8,17 @@ breeds come from. Two views of the same table:
 * **point map** (`fig2_sampling_sites.*`) — every collection site plotted at its
   county/city coordinates, English-only, **no text on the map** (journal style: the
   site list belongs in the caption or a table), plus a small zoom inset for the
-  crowded southwest cluster.
+  crowded southwest cluster;
+* **labelled point map** (`fig3_sampling_sites_labelled.*`) — same 21 sites, but the
+  breed names are set **outside** the map in two latitude-ordered columns and joined
+  to their sites by 0.3 pt leader lines (the "world map + China panel" layout used in
+  pangenome papers), on an optional Natural Earth relief basemap.
 
 ![Province map](fig1_province_counts.png)
 
 ![Point map](fig2_sampling_sites.png)
+
+![Labelled point map](fig3_sampling_sites_labelled.png)
 
 ## Data provenance
 
@@ -94,6 +100,23 @@ python3 plot_china_sampling_points.py --labels    # draft with place names
 
 Options: `--counts` / `--sites`, `--geo`, `--maritime`, `--outdir`, `--stem`.
 Edit the TSV and re-run; label offsets live in the same file.
+
+### Labelled map
+
+`plot_china_sampling_labelled.py` reads the same `china_sampling_sites.tsv` (the
+`label_en` column is the pinyin breed name printed in the margin) and renders
+`fig3_sampling_sites_labelled.png/.pdf` (600 dpi, 160 x 110 mm):
+
+```bash
+python3 plot_china_sampling_labelled.py                     # relief basemap
+python3 plot_china_sampling_labelled.py --relief ''          # flat style
+python3 plot_china_sampling_labelled.py --no-labels          # points only
+```
+
+The relief raster (Natural Earth 1:50 m, downsampled to 5400 x 2700) is shipped in
+`data/relief/`; pass `--relief ''` for the flat style. The name column is pinyin, not Chinese,
+because the figure text must stay English (`Lv` replaces `ü`).
+
 
 ## Boundary data
 

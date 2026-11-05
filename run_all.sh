@@ -87,6 +87,8 @@ if [[ -f "$ROOT/china_sampling_map/data/china_provinces.geojson" ]]; then
     python3 plot_china_sampling_map.py --lang en
   run_module china_points china_sampling_map fig2_sampling_sites.png -- \
     python3 plot_china_sampling_points.py
+  run_module china_points_labelled china_sampling_map fig3_sampling_sites_labelled.png -- \
+    python3 plot_china_sampling_labelled.py
 else
   if [[ -z "$FILTER" || "china" == *"$FILTER"* ]]; then
     head2 "china_sampling_map"; say "  [skip] 缺 data/china_provinces.geojson（README「Boundary data」里的 curl 命令）"

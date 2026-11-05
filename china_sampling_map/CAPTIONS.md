@@ -26,11 +26,32 @@ journal submission. Numbers match the current files (363 individuals, 24 records
 
 ---
 
+---
+
+## 图 3　中国地方鸡种采样点的地理分布（带品种标注）
+
+> **图 3　中国地方鸡种采样点的地理分布。** 每个空心圆是一个采样点（共 21 个），圆面积与
+> 该点采纳的个体数（2–40 只）成正比；品种名按纬度排在图外侧两列，以 0.3 pt 细线指向对应
+> 点位，避免文字压盖地理要素。共 363 只个体、24 条品种记录、10 个省份。底图为 Natural
+> Earth 1:50 m 晕渲栅格，叠加国界、省界与南海断续线。
+
+**English**
+
+> **Figure 3. Geographic distribution of the sampling sites, with breed labels.**
+> Each open circle is one sampling site (21 in total); circle area is proportional to
+> the number of adopted individuals at that site (2–40). Breed names are stacked in two
+> latitude-ordered columns outside the map and connected to their sites by 0.3 pt leader
+> lines, so no text covers the geography. In total 363 individuals from 24 breed records
+> across 10 provinces. Basemap: Natural Earth 1:50 m shaded relief over national and
+> provincial boundaries and the South China Sea dashed line.
+
+
 ## Before submission
 
 * 中文投稿/学位论文：底图须换成[标准地图服务](http://bzdt.ch.mnr.gov.cn/)的边界，并在图注末尾加审图号（如“审图号：GS(2019)1822 号”）。
 * 英文投稿：把 “Table X” 换成实际的表号；若期刊要求，可在图注末补一句
   “Coordinates were obtained from the Alibaba DataV administrative-boundary service.”
+* 图 3 的底图是 Natural Earth 晕渲，不是标准地图服务底图，审图号要求与图 1/图 2 相同。
 * 两图若同页排版，建议共用一条图例（“Adopted individuals”），图注中只保留编号与说明。
 * 图 1 与图 2 的个体总数必须一致（367 → 363 的差异只允许出现在未去重的旧版里）；
   若正文表仍用 367，请同步改成 363 并说明剔除了 2 条重复上传记录。

@@ -13,4 +13,8 @@ __pycache__/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/
 !world_distribution_map/data/relief/*.jpg
+!china_sampling_map/data/
+china_sampling_map/data/*
+!china_sampling_map/data/relief/
+!china_sampling_map/data/relief/*.jpg
 Rplots.pdf
