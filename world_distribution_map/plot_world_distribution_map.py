@@ -151,8 +151,8 @@ def draw_china(ax, province_path, maritime_path, bm,
 
 
 # --- labels ------------------------------------------------------------------
-def leader_labels(ax, rows, fontsize=5.2, pad=0.012, y_top=0.950, y_bot=0.050,
-                  line_lw=0.30, marker_s=12.0):
+def leader_labels(ax, rows, sizes=None, fontsize=5.2, pad=0.012, y_top=0.950,
+                  y_bot=0.050, line_lw=0.30, marker_s=12.0):
     """Stack labels outside the axes and connect each one to its point."""
     for side in ("left", "right"):
         group = [r for r in rows if r["side"] == side]
@@ -171,9 +171,16 @@ def leader_labels(ax, rows, fontsize=5.2, pad=0.012, y_top=0.950, y_bot=0.050,
                 arrowprops=dict(arrowstyle="-", lw=line_lw, color=TEXT,
                                 shrinkA=2.0, shrinkB=2.6),
             )
+    sizes = sizes if sizes is not None else [marker_s] * len(rows)
     ax.scatter([r["lon"] for r in rows], [r["lat"] for r in rows],
-               s=marker_s, facecolors="white", edgecolors=TEXT,
+               s=sizes, facecolors="white", edgecolors=TEXT,
                linewidths=0.45, zorder=10)
+
+
+def marker_sizes(rows):
+    counts = np.array([r.get("individuals", 1) or 1 for r in rows], dtype=float)
+    r_mm = 1.15 + 0.95 * np.sqrt(counts / counts.max())
+    return (r_mm * 2.835) ** 2 * np.pi
 
 
 def style_axis(ax, xlim, ylim, aspect_lat):
@@ -203,6 +210,7 @@ def read_samples(path):
             rows.append(dict(sample=d["sample"].strip(),
                              panel=d["panel"].strip().lower(),
                              lon=float(d["lon"]), lat=float(d["lat"]),
+                             individuals=int(float(d.get("individuals") or 1)),
                              side=d.get("side", "").strip().lower()))
     return rows
 
@@ -243,6 +251,14 @@ def main(argv=None) -> int:
     ap.add_argument("--labels", action="store_true", default=True,
                     help="margin labels with leader lines (default: on)")
     ap.add_argument("--no-labels", dest="labels", action="store_false")
+    ap.add_argument("--label-panels", default="both",
+                    choices=("both", "world", "china", "none"),
+                    help="which panel gets margin labels (default: both)")
+    ap.add_argument("--sizes-panel", default="china",
+                    choices=("china", "world", "both"),
+                    help="which panel scales circles by the individuals column")
+    ap.add_argument("--locator", action="store_true",
+                    help="draw the China-panel extent as a box on the world map")
     ap.add_argument("--panel-letters", action="store_true", default=True)
     ap.add_argument("--no-panel-letters", dest="panel_letters", action="store_false")
     args = ap.parse_args(argv)
@@ -278,14 +294,34 @@ def main(argv=None) -> int:
     draw_china(ax_c, args.china_geo, args.maritime, bm, relief=args.relief)
     style_axis(ax_c, CHINA_XLIM, CHINA_YLIM, 30.0)
 
-    if args.labels:
-        leader_labels(ax_w, world, fontsize=5.0, pad=0.012)
-        leader_labels(ax_c, china, fontsize=4.9, pad=0.020)
+    want = {"both": ("world", "china"), "world": ("world",),
+            "china": ("china",), "none": ()}[args.label_panels] if args.labels else ()
+    # circle area can encode individuals, but only on the panel where the sites
+    # are actually distinguishable; on the world panel the 21 Chinese sites sit
+    # on top of each other, so uniform small dots read better
+    w_sizes = marker_sizes(world) if args.sizes_panel in ("world", "both") else 11.0
+    c_sizes = marker_sizes(china) if args.sizes_panel in ("china", "both") else 11.0
+
+    def _dots(ax, grp, sz):
+        ax.scatter([r["lon"] for r in grp], [r["lat"] for r in grp], s=sz,
+                   facecolors="white", edgecolors=TEXT, linewidths=0.45, zorder=10)
+
+    if "world" in want:
+        leader_labels(ax_w, world, sizes=w_sizes, fontsize=5.0, pad=0.012)
     else:
-        for ax, grp in ((ax_w, world), (ax_c, china)):
-            ax.scatter([r["lon"] for r in grp], [r["lat"] for r in grp],
-                       s=12.0, facecolors="white", edgecolors=TEXT,
-                       linewidths=0.45, zorder=10)
+        _dots(ax_w, world, w_sizes)
+    if "china" in want:
+        leader_labels(ax_c, china, sizes=c_sizes, fontsize=4.9, pad=0.020)
+    else:
+        _dots(ax_c, china, c_sizes)
+
+    if args.locator:
+        from matplotlib.patches import Rectangle
+        ax_w.add_patch(Rectangle((CHINA_XLIM[0], CHINA_YLIM[0]),
+                                 CHINA_XLIM[1] - CHINA_XLIM[0],
+                                 CHINA_YLIM[1] - CHINA_YLIM[0],
+                                 fill=False, edgecolor=TEXT, linewidth=0.55,
+                                 zorder=12))
 
     if args.panel_letters:
         for ax, letter in ((ax_w, "a"), (ax_c, "b")):

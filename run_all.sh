@@ -165,6 +165,10 @@ if have_py matplotlib; then
   run_module world_distribution_map_relief world_distribution_map fig_world_distribution_relief.png -- \
     python3 plot_world_distribution_map.py --relief data/relief/NE1_50M_SR_W.jpg \
       --stem fig_world_distribution_relief
+  run_module world_distribution_map_real world_distribution_map fig_china_real_world_china.png -- \
+    python3 plot_world_distribution_map.py --samples samples_china_real.tsv \
+      --label-panels china --locator --sizes-panel china \
+      --relief data/relief/NE1_50M_SR_W.jpg --stem fig_china_real_world_china
 else
   head2 "world_distribution_map"; say "  [skip] 缺 python 包 matplotlib"
   record skip world_distribution_map "缺 python 包"

@@ -12,6 +12,10 @@
 
 ![world distribution map — flat basemap](fig_world_distribution.png)
 
+**真实数据版（本项目 21 个采样点：世界面板只放定位框和小点，中国面板带品种标注）：**
+
+![real data: world + China](fig_china_real_world_china.png)
+
 ---
 
 ## 1. 这张图在回答什么问题
@@ -31,6 +35,7 @@
 |---|---|
 | `plot_world_distribution_map.py` | 纯 matplotlib + GeoJSON，无 geopandas / GDAL；读一张 TSV 出双面板图 |
 | `samples.tsv` | **示例数据**（世界 20 条 + 中国 29 条），坐标是编的，只用来演示版式 |
+| `samples_china_real.tsv` | 本项目真实采样点：21 个点 × 2 个面板（来自 china_sampling_map 的 363 只/24 记录口径） |
 | `data/world_countries_110m.geojson` | Natural Earth 1:110m 国界（public domain） |
 | `data/china_provinces.geojson` | 省级行政区（阿里 DataV，供示例使用） |
 | `data/china_maritime.geojson` | 南海断续线（绘制用，非审图底图） |
@@ -47,7 +52,12 @@ python3 plot_world_distribution_map.py --basemap terrain
 python3 plot_world_distribution_map.py --no-labels     # 只要点，不要字
 python3 plot_world_distribution_map.py --no-panel-letters
 python3 plot_world_distribution_map.py --samples my.tsv --stem fig1_map
-python3 plot_world_distribution_map.py --relief NE1_50M_SR_W.png   # 可选：真实地形底图
+python3 plot_world_distribution_map.py --relief data/relief/NE1_50M_SR_W.jpg
+
+# 真实数据：中国面板带品种名，世界面板只放定位框（21 点全在中国，世界面板不再放大圆）
+python3 plot_world_distribution_map.py --samples samples_china_real.tsv \
+    --label-panels china --locator --sizes-panel china \
+    --relief data/relief/NE1_50M_SR_W.jpg --stem fig_china_real_world_china
 ```
 
 输出：`fig_world_distribution.png`（600 dpi，260 × 94 mm）+ 同名矢量 PDF。
