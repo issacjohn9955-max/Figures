@@ -17,7 +17,7 @@
 | `te_factor_polar` | Fig 3B | 气候因子关联位点是专有还是共享 | 真实（+1 个版式对照） |
 | `corr_ci_scatter` | Fig 4A | 两种筛选方法的证据是否一致 | 真实数值，统计量是代理 |
 | `te_ibe_adaptive_neutral` | Fig 3E/3F | 自适应 TE 是否比中性 TE 更强的 IBE | 真实重算 |
-| `world_distribution_map` | 常见 Figure 1 版式 | 样本来自哪里（全球 + 中国两张面板） | **合成示例，仅版式** |
+| `world_distribution_map` | 常见 Figure 1 版式 | 样本来自哪里（全球 + 中国两张面板） | **真实 21 点（最终版）+ 合成版式示例** |
 
 ---
 
@@ -190,10 +190,10 @@ F 面板：自适应 **r=0.35 (p=0.067)**、中性 r=0.06 (p=0.31)。
 中国品种名如果压在地图上必然互相遮挡，所以把名字挪到地图外侧排成两列（按纬度从北到南），
 再用 0.3 pt 的细引导线指回点位。左右哪一侧由经度自动分（取中位数），也可以手工指定。
 
-**内容**：`samples.tsv` 里有 49 条示例记录（全球 20 条 + 中国 29 条），
-坐标是**编的**，只为撑满版式；换成真实采样表后脚本不用改。
-两种底图：默认白底中性色；加 `--relief data/relief/NE1_50M_SR_W.jpg` 换成彩色晕渲
-（`fig_world_distribution_relief.png` 就是这一版）。
+**内容（最终版 `fig_china_real_world_china.png/.pdf`，2026-11-05 定稿）**：
+真实数据 21 个采样点 / 363 只 / 24 条记录 / 10 省，来自 `samples_china_real.tsv`；
+世界面板（a）只放定位框和小点，中国面板（b）带品种标注（拼音，按纬度排两列、0.3 pt 引导线）。
+`fig_world_distribution*.png` 那两版用的是 `samples.tsv` 里 49 条**编造**坐标，只作版式示例。
 
 **口径与坑**：
 

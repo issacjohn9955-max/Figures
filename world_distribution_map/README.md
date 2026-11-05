@@ -4,6 +4,18 @@
 不压在地图上**，而是在地图左右两侧的空白里竖排，用 0.3 pt 的细直线牵到对应的点。
 家养动物种质资源 / 泛基因组论文的 Figure 1 基本都是这个套路。
 
+**最终版（投稿用，2026-11-05 定稿）：`fig_china_real_world_china.png` / `.pdf`**
+真实数据 21 个采样点 / 363 只 / 24 记录 / 10 省；世界面板只放定位框和小点，中国面板带品种标注，
+图内无标题；图注见 `CAPTIONS.md`。
+
+![final: real data, world + China](fig_china_real_world_china.png)
+
+---
+
+## 版式示例（合成数据，仅演示）
+
+下面两版用 `samples.tsv` 里 49 条编造的坐标，只演示底图和配色，不是正文图：
+
 **彩色版（Natural Earth 1:50m 晕渲底图）：**
 
 ![world distribution map — relief basemap](fig_world_distribution_relief.png)
@@ -11,10 +23,6 @@
 **极简版（纯白底 + 中性色，适合黑白打印和严格的期刊风格）：**
 
 ![world distribution map — flat basemap](fig_world_distribution.png)
-
-**真实数据版（本项目 21 个采样点：世界面板只放定位框和小点，中国面板带品种标注）：**
-
-![real data: world + China](fig_china_real_world_china.png)
 
 ---
 

@@ -15,8 +15,13 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 | [`pca_climate_zone/`](pca_climate_zone/README.md) | PCA of Chinese indigenous chickens coloured by agricultural climate zone (colour + shape double encoding, horizontal two-row legend above the panel) — TE-insertion version **and** SNP version, same layout | `fig_pca_te_climate.png/.pdf`, `fig_pca_snp_climate.png/.pdf`, `preview_6zone_synthetic.png/.pdf` (synthetic layout check), plus `CAPTIONS.md` |
 | [`te_ibe_adaptive_neutral/`](te_ibe_adaptive_neutral/README.md) | IBD vs IBE — FST/(1−FST) against geographic distance (E) and environmental distance (F), adaptive vs neutral TEs, each with a linear fit + 95% CI and a Mantel r/p legend | `te_ibe_adaptive_neutral.png/.pdf` |
 | [`te_factor_polar/`](te_factor_polar/README.md) | Climate-associated TE loci per driver — polar stacked bars, inner layer = unique to that driver, outer = also associated with another driver (Figure 3B layout); the paper-style reproduction **and** the ChickenTE version | `te_factor_polar.png/.pdf`, `te_factor_polar_all7.png/.pdf`, `demo_paper_style.png/.pdf` + `demo_compare.png`, plus `CAPTIONS.md` |
-| [`world_distribution_map/`](world_distribution_map/README.md) | Sample origins on a world panel **and** an enlarged China panel; sample names sit outside both maps in two latitude-ordered columns joined to their points by 0.3 pt leader lines (template with a synthetic demo table) | `fig_world_distribution.png/.pdf`, plus `CAPTIONS.md` |
+| [`world_distribution_map/`](world_distribution_map/README.md) | **FINAL** — sample origins on a world panel and an enlarged China panel; 21 real sites, breed names outside the map in two latitude-ordered columns joined by 0.3 pt leader lines. The synthetic demo variants show the layout only | **`fig_china_real_world_china.png/.pdf`** (final), `fig_world_distribution*.png/.pdf` (demo), plus `CAPTIONS.md` |
 | [`variable_contribution/`](variable_contribution/README.md) | Contribution of each climate variable to TE variation — ranked bars with a 1 % screening line, plus an inset combo panel (contribution bars + permutation-importance line) carrying the model settings (Figure 2A/2B layout) | `variable_contribution.png/.pdf`, plus `CAPTIONS.md` |
+
+## Final figures
+
+[`FINAL_FIGURES.md`](FINAL_FIGURES.md) lists the figures marked as final (定稿) — cite those files in the manuscript;
+the other `fig_*` variants in a module are layout demos.
 
 ## Conventions
 
