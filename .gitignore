@@ -5,7 +5,10 @@ __pycache__/
 .DS_Store
 
 # data/ 默认忽略（省界 geojson 等大文件不入库）。
-# 例外：pca_climate_zone 的派生小表是复现成品图的唯一输入，必须提交。
+# 例外 1：pca_climate_zone 的派生小表是复现成品图的唯一输入，必须提交。
+# 例外 2：world_distribution_map 想做到整目录拷走即可运行，自带 1.1 MB 边界面。
 !pca_climate_zone/data/
 !pca_climate_zone/data/*.tsv
+!world_distribution_map/data/
+!world_distribution_map/data/*.geojson
 Rplots.pdf

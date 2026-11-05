@@ -156,6 +156,15 @@ run_module variable_contribution variable_contribution variable_contribution.png
   python3 plot_variable_contribution.py --input variable_stats.tsv \
     --out variable_contribution --line perm
 
+# --- 10. world_distribution_map ---------------------------------------------
+if have_py matplotlib; then
+  run_module world_distribution_map world_distribution_map fig_world_distribution.png -- \
+    python3 plot_world_distribution_map.py
+else
+  head2 "world_distribution_map"; say "  [skip] 缺 python 包 matplotlib"
+  record skip world_distribution_map "缺 python 包"
+fi
+
 # --- summary ---------------------------------------------------------------
 say ""
 say "----------------------------------------------------------------"
