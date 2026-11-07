@@ -1,0 +1,5 @@
+track	tail_x_in	tail_y_in	head_x_in	head_y_in	tail_angle_deg	tail_radius_user	track_color
+LINE	8.5229	6.2805	9.902	7.6615	72	1.005	#386C8C
+LTR	8.696	5.4662	9.902	6.1571	84	1.005	#7BB6AC
+SINE	8.696	4.6338	9.902	4.6528	96	1.005	#9689B9
+DNA	8.5229	3.8195	9.902	3.1484	108	1.005	#B4AD74

@@ -17,6 +17,7 @@ a script, a small input table, and the exported PNG (600 dpi) + vector PDF.
 | [`te_factor_polar/`](te_factor_polar/README.md) | Climate-associated TE loci per driver — polar stacked bars, inner layer = unique to that driver, outer = also associated with another driver (Figure 3B layout); the paper-style reproduction **and** the ChickenTE version | `te_factor_polar.png/.pdf`, `te_factor_polar_all7.png/.pdf`, `demo_paper_style.png/.pdf` + `demo_compare.png`, plus `CAPTIONS.md` |
 | [`world_distribution_map/`](world_distribution_map/README.md) | **FINAL** — sample origins on a world panel and an enlarged China panel; 21 real sites, breed names outside the map in two latitude-ordered columns joined by 0.3 pt leader lines. The synthetic demo variants show the layout only | **`fig_china_real_world_china.png/.pdf`** (final), `fig_world_distribution*.png/.pdf` (demo), plus `CAPTIONS.md` |
 | [`variable_contribution/`](variable_contribution/README.md) | Contribution of each climate variable to TE variation — ranked bars with a 1 % screening line, plus an inset combo panel (contribution bars + permutation-importance line) carrying the model settings (Figure 2A/2B layout) | `variable_contribution.png/.pdf`, plus `CAPTIONS.md` |
+| [`fig1_chicken_GRCg7b_circos/`](fig1_chicken_GRCg7b_circos/README.md) | Chicken GRCg7b seven-track Circos — reference TE coverage (LINE/LTR/SINE/DNA) plus SNV, SV and TEV density on one 1 Mb window framework, with four TE structure callouts composed in R (V16). The V15 Circos panel is reused unchanged | `07_figures/R_v16/chicken_GRCg7b_R_v16_combined_TE-callouts.png/.pdf` (+ `07_figures/R_v15/`) |
 
 ## Final figures
 
@@ -32,6 +33,9 @@ the other `fig_*` variants in a module are layout demos.
 * Every figure folder has its own `README.md` stating **data provenance** and the
   exact selection rule used, so a figure can never be mistaken for a different
   dataset.
+* `fig1_chicken_GRCg7b_circos/` is the one large module (~70 MB): it ships the GRCg7b aggregate
+  annotation tables, window statistics and both rendered versions — still no BAM, FASTA or
+  individual-level records.
 * Only aggregated or derived tables are committed — no individual-level records,
   raw sequencing data or unpublished metadata.
 * Boundary data is downloaded by the script's documented `curl` commands rather

@@ -1,0 +1,22 @@
+item	value
+reference	GRCg7b
+window_bp	1000000
+composite_width_in	15.8
+composite_height_in	10
+aspect	1.58
+circos_width_in	9.8
+circos_region_x0_in	0.245
+circos_region_x1_in	9.702
+circle_center_x_in	4.7358
+circle_center_y_in	5.05
+circle_radius_in	3.9524
+unit_in_per_user	3.962264
+opening_deg	48
+panel_left_in	10.002
+panel_right_in	15.38
+panel_rows	4
+connector_mode	4 arrows from 48-degree opening
+font	Arial
+device_backend	quartz-png
+dpi	600
+v15_script	plot_chicken_circos_v15.R

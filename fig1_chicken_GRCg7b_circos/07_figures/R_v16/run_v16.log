@@ -1,0 +1,25 @@
+# V16 combined figure — 2026-11-07T13:00:44+0800
+# command: bash 06_scripts/run_combined_v16.sh 
+# R: Rscript (R) version 4.5.2 (2025-10-31)
+# project: figures/fig1_chicken_GRCg7b_circos (resolved at runtime)
+着丝粒 evidence 保留在 QC；主图全部使用同一种红色矩形。
+输入检查通过：1000000 bp，1063 个真实窗口，41 条染色体；组合画布 15.8 x 10.0 in。
+已输出：chicken_GRCg7b_R_v16_combined_TE-callouts.pdf（quartz-pdf，15.2 s）
+已输出：chicken_GRCg7b_R_v16_combined_TE-callouts.png（quartz-png，14.8 s）
+已输出：chicken_GRCg7b_R_v16_combined_TE-callouts.preview.png（quartz-png，13.7 s）
+输出目录：07_figures/R_v16（10 个文件）
+输出目录：07_figures/R_v16
+
+  [PASS] aspect 1.55–1.75  1.58
+  [PASS] 圆图未被缩放            V15 画布 9.8 in
+  [PASS] 面板避开圆图            左缘 10.00 in > 圆心+半径 8.69 in
+  [PASS] 面板在画板内            右缘 15.38 < 15.8 in
+  [PASS] 箭头起点在 48° 开口内     4 条
+  [PASS] 箭头终点在面板侧          4 条
+  [PASS] 四类结构齐备            LINE / LTR / SINE / DNA
+  [PASS] 产物齐备              7 个文件
+  [PASS] sha256 一致         全部匹配
+  [PASS] PNG 像素尺寸          9480x6000 px (600 dpi)
+  [PASS] PDF 页面尺寸          1137.6x720.0 pt (15.80x10.00 in)
+
+结果：11 项全部通过

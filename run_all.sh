@@ -174,6 +174,17 @@ else
   record skip world_distribution_map "缺 python 包"
 fi
 
+# --- 11. fig1_chicken_GRCg7b_circos（V15 Circos + V16 组合图）---------------
+if have_r circlize; then
+  run_module circos_combined fig1_chicken_GRCg7b_circos \
+    07_figures/R_v16/chicken_GRCg7b_R_v16_combined_TE-callouts.png -- \
+    bash 06_scripts/run_combined_v16.sh
+else
+  head2 "fig1_chicken_GRCg7b_circos"
+  say "  [skip] 缺 R 包 circlize：bash fig1_chicken_GRCg7b_circos/06_scripts/install_circos_R_dependencies.sh"
+  record skip fig1_chicken_GRCg7b_circos "缺 R 包 circlize"
+fi
+
 # --- summary ---------------------------------------------------------------
 say ""
 say "----------------------------------------------------------------"

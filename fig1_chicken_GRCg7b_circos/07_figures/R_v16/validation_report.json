@@ -1,0 +1,71 @@
+{
+  "status": "pass",
+  "composite_width_in": 15.8,
+  "composite_height_in": 10,
+  "aspect": 1.58,
+  "circle": {
+    "x": 4.735764,
+    "y": 5.05,
+    "radius": 3.952358
+  },
+  "panel": {
+    "left": 10.002,
+    "right": 15.38,
+    "rows": 4
+  },
+  "connectors": {
+    "track": [
+      "LINE",
+      "LTR",
+      "SINE",
+      "DNA"
+    ],
+    "tail_x_in": [
+      8.5229,
+      8.696,
+      8.696,
+      8.5229
+    ],
+    "tail_y_in": [
+      6.2805,
+      5.4662,
+      4.6338,
+      3.8195
+    ],
+    "head_x_in": [
+      9.902,
+      9.902,
+      9.902,
+      9.902
+    ],
+    "head_y_in": [
+      7.6615,
+      6.1571,
+      4.6528,
+      3.1484
+    ],
+    "tail_angle_deg": [
+      72,
+      84,
+      96,
+      108
+    ],
+    "tail_radius_user": [
+      1.005,
+      1.005,
+      1.005,
+      1.005
+    ],
+    "track_color": [
+      "#386C8C",
+      "#7BB6AC",
+      "#9689B9",
+      "#B4AD74"
+    ]
+  },
+  "checks": {
+    "aspect_in_range": true,
+    "panel_clear_of_circle": true,
+    "connectors_outside_tracks": true
+  }
+}
