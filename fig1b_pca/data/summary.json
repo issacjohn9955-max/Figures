@@ -1,0 +1,10 @@
+{
+  "cohort_samples": 140,
+  "cohort_groups": 13,
+  "snp_variants_used": 189489,
+  "te_loci_used": 7749,
+  "snp_pc1_pve": 0.019366941584760405,
+  "snp_pc2_pve": 0.018519538860073133,
+  "te_pc1_pve": 0.04265158831289596,
+  "te_pc2_pve": 0.02355120755798249
+}

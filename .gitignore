@@ -9,6 +9,10 @@ __pycache__/
 # 例外 2：world_distribution_map 想做到整目录拷走即可运行，自带 1.1 MB 边界面。
 !pca_climate_zone/data/
 !pca_climate_zone/data/*.tsv
+# 例外 3：fig1b_pca 的匿名化得分表是复现成品图的唯一输入。
+!fig1b_pca/data/
+!fig1b_pca/data/*.tsv
+!fig1b_pca/data/*.json
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/
