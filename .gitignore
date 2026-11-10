@@ -19,6 +19,9 @@ __pycache__/
 !fig2_environment/data/*.tsv
 !fig2_environment/data/*.json
 !fig2_environment/data/*.npy
+!fig3_rda/data/
+!fig3_rda/data/*.csv
+!fig3_rda/data/*.txt
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/
