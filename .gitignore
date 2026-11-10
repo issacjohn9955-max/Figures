@@ -15,6 +15,10 @@ __pycache__/
 !fig1b_pca/data/*.json
 !fig1c_tree_admixture/data/
 !fig1c_tree_admixture/data/*.tsv
+!fig2_environment/data/
+!fig2_environment/data/*.tsv
+!fig2_environment/data/*.json
+!fig2_environment/data/*.npy
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/

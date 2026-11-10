@@ -1,0 +1,29 @@
+﻿variable	group	n_sig_loci	contribution_pct	selected	shapley_pct	unique_pct	permutation_pct
+bio11	temperature	793	20.127	False			
+bio1	temperature	607	15.406	False			
+bio6	temperature	544	13.807	False			
+srad	radiation_humidity	492	12.487	True	9.282	8.943	4.543
+bio3	temperature	491	12.462	True	10.176	8.911	4.629
+bio9	temperature	256	6.497	True	9.158	10.3	11.631
+bio4	temperature	202	5.127	False			
+dew	radiation_humidity	188	4.772	False			
+vapr	radiation_humidity	131	3.325	False			
+bio13	precipitation	114	2.893	False			
+bio16	precipitation	69	1.751	False			
+wind	radiation_humidity	38	0.964	True	10.112	8.303	1.682
+elev	terrain	6	0.152	True	10.411	10.602	12.907
+dm	radiation_humidity	3	0.076	True	10.121	10.47	12.684
+bio12	precipitation	2	0.051	False			
+bio18	precipitation	2	0.051	True	11.076	10.036	9.956
+bio15	precipitation	1	0.025	False			
+bio7	temperature	1	0.025	False			
+bio10	temperature	0	0.0	False			
+bio17	precipitation	0	0.0	False			
+bio19	precipitation	0	0.0	True	10.399	11.534	17.453
+bio8	temperature	0	0.0	False			
+bio5	temperature	0	0.0	False			
+rh	radiation_humidity	0	0.0	False			
+rh_wet	radiation_humidity	0	0.0	False			
+rh_dry	radiation_humidity	0	0.0	True	9.358	9.162	5.812
+bio2	temperature	0	0.0	True	9.907	11.739	18.705
+bio14	precipitation	0	0.0	False			
