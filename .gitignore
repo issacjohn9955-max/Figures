@@ -13,6 +13,8 @@ __pycache__/
 !fig1b_pca/data/
 !fig1b_pca/data/*.tsv
 !fig1b_pca/data/*.json
+!fig1c_tree_admixture/data/
+!fig1c_tree_admixture/data/*.tsv
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/
