@@ -22,6 +22,11 @@ __pycache__/
 !fig3_rda/data/
 !fig3_rda/data/*.csv
 !fig3_rda/data/*.txt
+!fig4_evidence/data/
+!fig4_evidence/data/*.csv
+!fig5_te/data/
+!fig5_te/data/*.csv
+!fig5_te/data/*.sizes
 !world_distribution_map/data/
 !world_distribution_map/data/*.geojson
 !world_distribution_map/data/relief/
