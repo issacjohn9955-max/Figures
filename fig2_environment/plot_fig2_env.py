@@ -60,7 +60,7 @@ def draw_basemap(ax, polys, extent):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data-dir", default="data")
-    ap.add_argument("--geo", default="../_repo_preview/upstream/world_distribution_map/data/china_provinces.geojson")
+    ap.add_argument("--geo", default="data/china_provinces.geojson")
     ap.add_argument("--out", default="fig2_environment")
     ap.add_argument("--dpi", type=int, default=600)
     args = ap.parse_args()

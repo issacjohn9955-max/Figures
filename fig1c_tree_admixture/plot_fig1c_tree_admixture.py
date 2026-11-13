@@ -23,7 +23,23 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Rectangle
 from matplotlib.font_manager import FontProperties
 
-CJK = FontProperties(fname="/System/Library/Fonts/Hiragino Sans GB.ttc")
+def _cjk_font():
+    """First available CJK face: macOS, then Linux/CI, else the default."""
+    for path in ("/System/Library/Fonts/Hiragino Sans GB.ttc",
+                 "/System/Library/Fonts/PingFang.ttc",
+                 "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+                 "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"):
+        if os.path.exists(path):
+            return FontProperties(fname=path)
+    for fam in ("Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Zen Hei", "SimHei"):
+        try:
+            return FontProperties(family=fam)
+        except Exception:
+            continue
+    return FontProperties()
+
+
+CJK = _cjk_font()
 
 MM = 1 / 25.4
 INK = "#1B2430"
@@ -147,7 +163,8 @@ def main():
 
     plt.rcParams.update({
         "font.family": "sans-serif",
-        "font.sans-serif": ["PingFang SC", "Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
+        "font.sans-serif": ["PingFang SC", "Noto Sans CJK SC", "WenQuanYi Zen Hei",
+                            "Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
         "pdf.fonttype": 42,
         "axes.unicode_minus": False,
     })
